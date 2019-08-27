@@ -5,18 +5,14 @@ jobs:
       - image: node:10-alpine
     steps:
       - checkout
-      - run: yarn
-      - run: yarn lint
-  test:
-    docker:
-      - image: node:10-alpine
-    steps:
-      - checkout
-      - run: yarn
-      - run: yarn test
+      - run: 
+          name: Install & Build
+          command: yarn
+       - run: 
+          name: Test
+          command: yarn test
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - test
