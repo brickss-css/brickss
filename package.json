@@ -45,7 +45,8 @@
       "ts"
     ],
     "require": [
-      "ts-node/register"
+      "ts-node/register",
+      "./test.setup.js"
     ],
     "files": [
       "**/*.test.ts",
