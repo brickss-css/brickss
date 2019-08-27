@@ -1,5 +1,7 @@
 ## CSS-in-JS library for libraries.
 
+[![CircleCI](https://circleci.com/gh/brickss-css/brickss.svg?style=svg)](https://circleci.com/gh/brickss-css/brickss)
+
 - Small runtime < 300b min + gzip
   - Ahead of time compilation
     - Babel + TypeScript
