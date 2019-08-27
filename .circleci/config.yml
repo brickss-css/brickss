@@ -5,10 +5,10 @@ jobs:
       - image: node:10-alpine
     steps:
       - checkout
-      - run: 
+      - run:
           name: Install & Build
           command: yarn
-       - run: 
+      - run:
           name: Test
           command: yarn test
 workflows:
