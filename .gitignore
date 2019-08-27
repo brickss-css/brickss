@@ -1,3 +1,4 @@
 tsconfig.tsbuildinfo
 .cache
 dist/
+node_modules
