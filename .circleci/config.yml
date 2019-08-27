@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - checkout
+      - run: yarn
+      - run: yarn lint
+  test:
+    docker:
+      - image: node:10-alpine
+    steps:
+      - checkout
+      - run: yarn
+      - run: yarn test
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
