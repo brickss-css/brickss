@@ -1,0 +1,22 @@
+{
+  "name": "brickss",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CSS-in-JS library for libraries",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rkr00t/brickss.git"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d4rkr00t/brickss/issues"
+  },
+  "homepage": "https://github.com/d4rkr00t/brickss#readme"
+}
