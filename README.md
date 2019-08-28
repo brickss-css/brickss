@@ -11,9 +11,9 @@
   - Ahead of time compilation
     - Babel + TypeScript
 - Dynamic values:
-  - CSS variables based
-  - Nothing complex
-  - Per component dynamic values, not instance based
+  - CSS variables based theming
+  - No other dynamic values
+  - CSS-Blocks like state
 - Object styles
   - Nested scss style nesting
   - All css media, keyframe, etc...
@@ -24,7 +24,7 @@
 - Minifiable by default
   - Not a string
 - PostCSS + plugins
-- CSS-Blocks like state
+- SSR – TBD
 
 ### Example API:
 
@@ -33,17 +33,31 @@ import React from "react";
 import { createStyle, setTheme, cssVar } from "brickss";
 
 // const myVar = cssVar('my-font-size');
-const myVar = "my-font-size__hash";
+const myVar = "var(--my-font-size__hash)";
 
 // const style = createStyle({
 //   color: 'red',
-//   "& .something[state|inverse]": {
+//   '[state|inverse]': {
+//      backgroundColor: 'yellow'
+//   }.
+//   ':hover': {
+//      color: 'green',
+//   },
+//   ".something[state|inverse]": {
 //     color: 'green',
 //     fontSize: myVar
+//   },
+//   ".something[state|inverse], .something_else": {
+//     color: 'green',
+//     fontSize: myVar
+//   },
+//   "@media screen and (min-width: 900px)": {
+//      color: 'black'
 //   }
 // }, {
 //   [myVar]: `13px`
 // });
+
 const style = state => {
   injectCss('file__hash', `
     .file__hash {
@@ -54,6 +68,7 @@ const style = state => {
 
   return classNames;
 };
+style.something = ".something__hash";
 
 export function ThemeProvider({ theme }) {
   let className = setTheme(theme);
@@ -68,7 +83,7 @@ export default function Button({ size, inverse, icon, children }) {
   return (
     <ThemeProvider theme={{ [myVar]: "20px" }}>
       <button className={classNames}>
-        {icon && <span className={styles.icon}>{icon}</span>}
+        {icon && <span className={style.something}>{icon}</span>}
         {children}
       </button>
     </ThemeProvider>
