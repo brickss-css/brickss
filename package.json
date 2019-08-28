@@ -7,10 +7,11 @@
     "test": "ava",
     "build": "tsc -b ./",
     "lint:staged": "lint-staged",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "ava": "^2.3.0",
     "lint-staged": "^9.2.4",
+    "parcel": "^1.12.3",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
     "ts-node": "^8.3.0",

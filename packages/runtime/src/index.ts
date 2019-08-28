@@ -10,4 +10,15 @@ export function injectCss(css: string, id: string) {
   document.head.appendChild(s);
 }
 
+export function objStr(state: any): string {
+  var k, cls='';
+	for (k in state) {
+		if (state[k]) {
+			cls && (cls += ' ');
+			cls += k;
+		}
+	}
+	return cls;
+}
+
 export function setTheme() {}

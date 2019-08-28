@@ -1,5 +1,5 @@
 import test from "ava";
-import { injectCss } from "./index";
+import { injectCss, objStr } from "./index";
 
 const window = global as any;
 
@@ -54,4 +54,10 @@ test("injectCss: injects only one style tag for the same block", t => {
 `
     ]
   ]);
+});
+
+test("style: returns the correct class names and inserts the style tag", t => {
+  const classNames = objStr({ inverse: true, dark: false });
+
+  t.deepEqual(classNames, 'inverse');
 });

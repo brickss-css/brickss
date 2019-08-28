@@ -2,6 +2,8 @@
   "name": "@brickss/runtime",
   "version": "0.0.0",
   "description": "CSS-in-JS library for libraries",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/d4rkr00t/brickss.git"

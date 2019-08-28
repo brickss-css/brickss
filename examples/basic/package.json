@@ -1,0 +1,11 @@
+{
+  "name": "@brickss-examples/basic",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "@brickss/runtime": "*"
+  },
+  "scripts": {
+    "start": "parcel index.html"
+  }
+}
