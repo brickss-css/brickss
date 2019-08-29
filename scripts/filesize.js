@@ -20,6 +20,7 @@ const tmpdir = os.tmpdir();
 async function checkSize(filepath, limit) {
   let execPromise;
   const platform = os.platform();
+  const stats = fs.statSync(filepath);
   if (platform === "darwin") {
     execPromise = exec(`stat -f %z ${filepath}`);
   } else {
@@ -32,6 +33,7 @@ async function checkSize(filepath, limit) {
     stderr,
     stdout,
     filepath,
+    stats,
     platform,
     content: fs.readFileSync(filepath, "utf8")
   });
