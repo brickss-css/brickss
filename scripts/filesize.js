@@ -28,7 +28,7 @@ async function checkSize(filepath, limit) {
 
   const { stdout, stderr } = await execPromise;
 
-  console.log({ stderr, stdout });
+  console.log({ stderr, stdout, filepath, platform });
 
   if (stderr) {
     console.error(stderr);
