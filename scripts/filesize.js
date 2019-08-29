@@ -23,10 +23,12 @@ async function checkSize(filepath, limit) {
   if (platform === "darwin") {
     execPromise = exec(`stat -f %z ${filepath}`);
   } else {
-    execPromise = exec(`stat -c %s ${filepath}`);
+    execPromise = exec(`stat -c %s "${filepath}"`);
   }
 
   const { stdout, stderr } = await execPromise;
+
+  console.log({ stderr, stdout });
 
   if (stderr) {
     console.error(stderr);

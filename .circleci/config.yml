@@ -12,7 +12,7 @@ jobs:
           name: Test
           command: yarn test
       - run:
-          name: Size check (uncompressed)
+          name: Size check
           command: node ./scripts/filesize.js ./packages/runtime/index.js
 workflows:
   version: 2
