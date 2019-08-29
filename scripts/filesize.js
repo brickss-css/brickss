@@ -28,7 +28,13 @@ async function checkSize(filepath, limit) {
 
   const { stdout, stderr } = await execPromise;
 
-  console.log({ stderr, stdout, filepath, platform });
+  console.log({
+    stderr,
+    stdout,
+    filepath,
+    platform,
+    content: fs.readFileSync(filepath, "utf8")
+  });
 
   if (stderr) {
     console.error(stderr);
