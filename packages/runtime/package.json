@@ -2,16 +2,15 @@
   "name": "@brickss/runtime",
   "version": "0.0.0",
   "description": "CSS-in-JS library for libraries",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/d4rkr00t/brickss.git"
+    "url": "git+https://github.com/brickss-css/brickss.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/d4rkr00t/brickss/issues"
+    "url": "https://github.com/brickss-css/brickss/issues"
   },
-  "homepage": "https://github.com/d4rkr00t/brickss#readme"
+  "homepage": "https://github.com/brickss-css/brickss#readme"
 }

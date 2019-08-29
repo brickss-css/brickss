@@ -2,3 +2,5 @@ tsconfig.tsbuildinfo
 .cache
 dist/
 node_modules
+*.gz
+.DS_Store

@@ -2,6 +2,11 @@
 
 [![CircleCI](https://circleci.com/gh/brickss-css/brickss.svg?style=svg)](https://circleci.com/gh/brickss-css/brickss)
 
+### Basic example: 
+
+`yarn workspace @brickss-examples/basic start`
+
+
 - Small runtime < 300b min + gzip
   - Ahead of time compilation
     - Babel + TypeScript
@@ -40,7 +45,7 @@ const myVar = "my-font-size__hash";
 //   [myVar]: `13px`
 // });
 const style = state => {
-  injectCss(`
+  injectCss('file__hash', `
     .file__hash {
       font-size: default;
       font-size: var(--my-font-size);

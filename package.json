@@ -29,6 +29,7 @@
     "parcel": "^1.12.3",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
+    "terser": "^4.2.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
@@ -52,6 +53,7 @@
     ],
     "files": [
       "**/*.test.ts",
+      "**/*.test.js",
       "!**/dist/**"
     ]
   }
