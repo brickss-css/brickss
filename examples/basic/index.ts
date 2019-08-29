@@ -1,7 +1,8 @@
-import { injectCss, objStr } from "@brickss/runtime";
+import { _i as injectCss, _os as objStr } from "@brickss/runtime";
 
 function style() {
   injectCss(
+    "basic-example-1234",
     `
     .basic-example-1234 {
       background: red;
@@ -10,22 +11,21 @@ function style() {
       color: #fff;
       padding: 10px;
     }
-  `,
-    "basic-example-1234"
+  `
   );
 
   const s = objStr({
-    ["basic-example-1234"]: true,
-  })
+    ["basic-example-1234"]: true
+  });
 
   // @ts-ignore
-  style.something = 'basic-example-1234__something';
+  style.something = "basic-example-1234__something";
 
   return s;
 }
 
 function render() {
-  console.log("rendering")
+  console.log("rendering");
   const root = document.getElementById("root");
   const className = style();
   root.innerHTML = `
@@ -35,6 +35,6 @@ function render() {
   `;
 }
 
-for (var i = 0; i<6; i++) {
+for (var i = 0; i < 6; i++) {
   render();
 }
