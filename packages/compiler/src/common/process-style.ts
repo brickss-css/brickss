@@ -3,7 +3,7 @@ import { hash } from "./hash";
 import { isSelector, isAtRule, isPsuedoSelector } from "./css";
 
 export function processStyle(
-  style: UnproccsedStyle,
+  style: UnprocessedStyle,
   filePath: string
 ): StyleScope {
   let uniqId = hash(filePath);
@@ -26,7 +26,7 @@ export function processStyle(
 
 export function processStyleDeclarations(
   scope: StyleScope,
-  style: UnproccsedStyle,
+  style: UnprocessedStyle,
   parentStyle: StyleDeclaration,
   resultStyle: Array<StyleDeclaration | AtRuleDeclaration>
 ) {
@@ -39,7 +39,7 @@ export function processStyleDeclarations(
       resultStyle.push(styleDeclaration);
       processStyleDeclarations(
         scope,
-        style[key] as UnproccsedStyle,
+        style[key] as UnprocessedStyle,
         styleDeclaration,
         resultStyle
       );
@@ -55,7 +55,7 @@ export function processStyleDeclarations(
       atRule.styles.push(styleDeclaration);
       processStyleDeclarations(
         scope,
-        style[key] as UnproccsedStyle,
+        style[key] as UnprocessedStyle,
         styleDeclaration,
         atRule.styles
       );
@@ -63,7 +63,7 @@ export function processStyleDeclarations(
     } else {
       parentStyle.properties.push({
         name: normalizePropertyName(key),
-        value: value as string
+        value: value as CSSPropertyValue
       });
     }
   }
@@ -151,13 +151,15 @@ export function getCleanSelector(sel: string): string {
   return sel.replace(/\[state\|(.+)\]/g, "").replace(/^\./, "");
 }
 
-export type UnproccsedStyle = {
-  [key: string]: string | UnproccsedStyle;
+export type UnprocessedStyle = {
+  [key: string]: CSSPropertyValue | UnprocessedStyle;
 };
+
+export type CSSPropertyValue = { type: string; value: string };
 
 export type CSSProperty = {
   name: string;
-  value: string;
+  value: CSSPropertyValue;
 };
 
 export type ClassName = {

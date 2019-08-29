@@ -2,10 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/brickss-css/brickss.svg?style=svg)](https://circleci.com/gh/brickss-css/brickss)
 
-### Basic example: 
+### Basic example:
 
 `yarn workspace @brickss-examples/basic start`
-
 
 - Small runtime < 300b min + gzip
   - Ahead of time compilation
@@ -22,7 +21,6 @@
 - More deterministic class names
   - Using filename + file hash
 - Minifiable by default
-  - Not a string
 - PostCSS + plugins
 - SSR – TBD
 
@@ -30,12 +28,12 @@
 
 ```javascript
 import React from "react";
-import { createStyle, setTheme, cssVar } from "brickss";
+import { css, setTheme, cssVar } from "brickss";
 
 // const myVar = cssVar('my-font-size');
 const myVar = "var(--my-font-size__hash)";
 
-// const style = createStyle({
+// const style = css({
 //   color: 'red',
 //   '[state|inverse]': {
 //      backgroundColor: 'yellow'
@@ -59,12 +57,15 @@ const myVar = "var(--my-font-size__hash)";
 // });
 
 const style = state => {
-  injectCss('file__hash', `
+  injectCss(
+    "file__hash",
+    `
     .file__hash {
       font-size: default;
       font-size: var(--my-font-size);
     }
-  `);
+  `
+  );
 
   return classNames;
 };

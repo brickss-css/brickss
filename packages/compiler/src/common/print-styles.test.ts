@@ -3,37 +3,37 @@ import { printStyles } from "./print-styles";
 import { processStyle } from "./process-style";
 
 let unprocessedStyle = {
-  color: "red",
+  color: { type: "string", value: "red" },
 
   ":hover": {
-    color: "green"
+    color: { type: "string", value: "green" }
   },
 
-  backgroundColor: "red",
+  backgroundColor: { type: "string", value: "red" },
 
   ".something[state|inverse]": {
-    color: "green",
-    fontSize: "var(--my-font-size__hash)",
-    paddingTop: "10px",
-    paddingLeft: "10px",
-    paddingBottom: "10px",
-    paddingRight: "10px"
+    color: { type: "string", value: "green" },
+    fontSize: { type: "identifier", value: "myVar" },
+    paddingTop: { type: "string", value: "10px" },
+    paddingLeft: { type: "string", value: "10px" },
+    paddingBottom: { type: "string", value: "10px" },
+    paddingRight: { type: "string", value: "10px" }
   },
 
   ".icon[state|size=small]": {
-    padding: "20px"
+    padding: { type: "string", value: "20px" }
   },
 
   ".something[state|inverse], .something-else": {
-    color: "green",
-    fontSize: "var(--my-font-size__hash)"
+    color: { type: "string", value: "green" },
+    fontSize: { type: "identifier", value: "myVar" }
   },
 
   "@media screen and (min-width: 900px)": {
-    color: "black",
+    color: { type: "string", value: "black" },
 
     ".something[state|inverse]": {
-      color: "blue"
+      color: { type: "string", value: "blue" }
     }
   }
 };
@@ -42,13 +42,5 @@ let filePath = "packages/something/button.ts";
 
 test("should process basic style", async t => {
   let result = await printStyles(processStyle(unprocessedStyle, filePath));
-  t.snapshot(result);
-});
-
-test("should process basic style and output minified result", async t => {
-  let result = await printStyles(
-    processStyle(unprocessedStyle, filePath),
-    true
-  );
   t.snapshot(result);
 });

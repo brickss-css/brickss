@@ -2,6 +2,8 @@
   "name": "@brickss/compiler",
   "version": "0.0.0",
   "description": "CSS-in-JS library for libraries",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brickss-css/brickss.git"
@@ -15,6 +17,7 @@
   "dependencies": {
     "@types/cssnano": "^4.0.0",
     "cssnano": "^4.1.10",
-    "postcss": "^7.0.17"
+    "postcss": "^7.0.17",
+    "typescript": "^3.6.2"
   }
 }

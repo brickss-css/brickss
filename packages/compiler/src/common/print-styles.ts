@@ -5,59 +5,63 @@ import {
   AtRuleDeclaration
 } from "./process-style";
 
-export async function printStyles(
-  scope: StyleScope,
-  minify: boolean = false
-): Promise<string> {
-  let styles = scope.styles
-    .map(style => {
-      if (isStyleDeclaration(style)) {
-        return printStyleDeclaration(scope, style);
-      }
-      return printAtRule(scope, style);
-    })
-    .join("\n");
+export type PrintableValueCSSVar = {
+  type: "cssVar";
+  value: { name: string; identifier: string };
+};
+export type PrintableValue =
+  | { type: "static"; value: string }
+  | PrintableValueCSSVar;
 
-  if (minify) {
-    return (await require("postcss")([
-      require("cssnano")({
-        preset: "default"
-      })
-    ]).process(styles)).css;
-  }
+export function printStyles(scope: StyleScope) {
+  let styles = scope.styles
+    .reduce<Array<PrintableValue>>((acc, style) => {
+      if (isStyleDeclaration(style)) {
+        return acc.concat(printStyleDeclaration(scope, style));
+      }
+      return acc.concat(printAtRule(scope, style));
+    }, [])
+    .reduce((acc: Array<PrintableValue>, style: PrintableValue) => {
+      let last = acc[acc.length - 1];
+      if (last && last.type === "static" && style.type === "static") {
+        last.value += " " + style.value;
+      } else {
+        acc.push(style);
+      }
+      return acc;
+    }, []);
 
   return styles;
 }
 
-export function printAtRule(
-  scope: StyleScope,
-  atRule: AtRuleDeclaration
-): string {
+export function printAtRule(scope: StyleScope, atRule: AtRuleDeclaration) {
   if (!atRule.styles.length) {
-    return "";
+    return [{ type: "static", value: "" }] as Array<PrintableValue>;
   }
 
-  let rule: Array<string> = [atRule.rule + " {"];
+  let rule: Array<PrintableValue> = [
+    { type: "static", value: atRule.rule + " {" }
+  ];
 
   atRule.styles.forEach(style => {
     if (isStyleDeclaration(style)) {
-      rule.push(printStyleDeclaration(scope, style));
+      rule = rule.concat(printStyleDeclaration(scope, style));
     }
   });
 
-  rule.push("}");
-  return rule.join("\n");
+  rule.push({ type: "static", value: "}" });
+  return rule;
 }
 
 export function printStyleDeclaration(
   scope: StyleScope,
   styleDeclaration: StyleDeclaration
-): string {
+) {
   if (!styleDeclaration.properties.length) {
-    return "";
+    return [{ type: "static", value: "" }] as Array<PrintableValue>;
   }
 
-  let style: Array<string> = [];
+  let style: Array<PrintableValue> = [];
   let classNames = styleDeclaration.classNames
     .map(className => {
       let modifiers = buildModifiers(scope.name, className.modifiers);
@@ -67,15 +71,31 @@ export function printStyleDeclaration(
     })
     .join(", ");
 
-  style.push(classNames, "{");
+  style.push({ type: "static", value: classNames + " {" });
 
   styleDeclaration.properties.forEach(({ name, value }) => {
-    let prop = name + ": " + value + ";";
-    style.push(prop.padStart(prop.length + 2, " "));
+    if (value.type === "identifier") {
+      // let defaultValue = `\$\{${value.value}\.defaultValue ? '${name}: ' + ${value.value}.defaultValue + ';' : '' }`;
+      // style.push(defaultValue.padStart(defaultValue.length + 2, " "));
+
+      // let val = `var(--\$\{${value.value}.name}, \$\{${value.value}.defaultValue || ''})`;
+      // let prop = name + ": " + val + ";";
+      // style.push(prop.padStart(prop.length + 2, " "));
+
+      style.push({
+        type: "cssVar",
+        value: {
+          name,
+          identifier: value.value
+        }
+      });
+    } else {
+      style.push({ type: "static", value: name + ": " + value.value + ";" });
+    }
   });
 
-  style.push("}");
-  return style.join("\n");
+  style.push({ type: "static", value: "}" });
+  return style;
 }
 
 export function buildModifiers(
