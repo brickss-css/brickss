@@ -2,7 +2,6 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./packages/compiler" },
-    { "path": "./packages/runtime" }
+    { "path": "./packages/compiler" }
   ]
 }
