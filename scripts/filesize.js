@@ -10,6 +10,7 @@ const Terser = require("terser");
 
 const pReadFile = util.promisify(fs.readFile);
 const pWriteFile = util.promisify(fs.writeFile);
+const pStat = util.promisify(fs.stat);
 
 const UNCOMPRESSED_BYTE_LIMIT = 2000;
 const ZIPPED_BYTE_LIMIT = 500;
@@ -18,32 +19,9 @@ const COMPRESSED_BYTE_LIMIT = 300;
 const tmpdir = os.tmpdir();
 
 async function checkSize(filepath, limit) {
-  let execPromise;
-  const platform = os.platform();
-  const stats = fs.statSync(filepath);
-  if (platform === "darwin") {
-    execPromise = exec(`stat -f %z ${filepath}`);
-  } else {
-    execPromise = exec(`stat -c %s "${filepath}"`);
-  }
+  const stats = await pStat(filepath);
 
-  const { stdout, stderr } = await execPromise;
-
-  console.log({
-    stderr,
-    stdout,
-    filepath,
-    stats,
-    platform,
-    content: fs.readFileSync(filepath, "utf8")
-  });
-
-  if (stderr) {
-    console.error(stderr);
-    return;
-  }
-
-  const byteOutput = stdout.replace("\n", "");
+  const byteOutput = stats.size;
   if (Number(byteOutput) > limit) {
     return Promise.reject(byteOutput);
   }
@@ -52,8 +30,8 @@ async function checkSize(filepath, limit) {
 }
 
 async function compress(filepath) {
-  const { name, ext, dir } = path.parse(filepath);
-  const outputPath = `${dir}/${name}.min${ext}`;
+  const { name, ext } = path.parse(filepath);
+  const outputPath = `${tmpdir}/${name}.min${ext}`;
   const contents = await pReadFile(filepath, "utf8");
   await pWriteFile(outputPath, Terser.minify(contents).code, "utf8");
 
@@ -62,8 +40,8 @@ async function compress(filepath) {
 
 function gzip(filepath) {
   return new Promise(resolve => {
-    const { base, dir } = path.parse(filepath);
-    const outputPath = `${dir}/${base}.gz`;
+    const { base } = path.parse(filepath);
+    const outputPath = `${tmpdir}/${base}.gz`;
     fs.createReadStream(filepath)
       .pipe(zlib.createGzip())
       .pipe(fs.createWriteStream(outputPath))
