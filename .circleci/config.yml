@@ -13,10 +13,7 @@ jobs:
           command: yarn test
       - run:
           name: Size check (uncompressed)
-          command: node ./scripts/filesize.js ./packages/runtime/src/index.js
-      - run:
-          name: Size check (compressed)
-          command: COMPRESSED_CHECK=1 node ./scripts/filesize.js $(node ./scripts/gzip.js ./packages/runtime/src/index.js)
+          command: node ./scripts/filesize.js ./packages/runtime/index.js
 workflows:
   version: 2
   build_and_test:
