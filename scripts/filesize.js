@@ -50,8 +50,8 @@ async function checkSize(filepath, limit) {
 }
 
 async function compress(filepath) {
-  const { name, ext } = path.parse(filepath);
-  const outputPath = `${tmpdir}/${name}.min${ext}`;
+  const { name, ext, dir } = path.parse(filepath);
+  const outputPath = `${dir}/${name}.min${ext}`;
   const contents = await pReadFile(filepath, "utf8");
   await pWriteFile(outputPath, Terser.minify(contents).code, "utf8");
 
@@ -60,12 +60,15 @@ async function compress(filepath) {
 
 function gzip(filepath) {
   return new Promise(resolve => {
-    const { base } = path.parse(filepath);
-    const outputPath = `${tmpdir}/${base}.gz`;
+    const { base, dir } = path.parse(filepath);
+    const outputPath = `${dir}/${base}.gz`;
     fs.createReadStream(filepath)
       .pipe(zlib.createGzip())
       .pipe(fs.createWriteStream(outputPath));
-    resolve(outputPath);
+
+    process.nextTick(() => {
+      resolve(outputPath);
+    });
   });
 }
 
