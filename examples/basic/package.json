@@ -1,11 +1,11 @@
 {
   "name": "@brickss-examples/basic",
-  "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "@brickss/runtime": "*"
+    "@brickss/runtime": "0.0.0",
+    "@brickss/compiler": "0.0.0"
   },
   "scripts": {
-    "start": "parcel index.html"
+    "start": "node ./build-example.js && parcel index.html"
   }
 }

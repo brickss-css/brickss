@@ -8,7 +8,7 @@ export function isSelector(str: string): boolean {
 }
 
 export function isModifier(str: string): boolean {
-  return str.startsWith("[");
+  return str.startsWith("[state|");
 }
 
 export function isPsuedoSelector(str: string): boolean {
