@@ -66,11 +66,8 @@ function gzip(filepath) {
     const outputPath = `${dir}/${base}.gz`;
     fs.createReadStream(filepath)
       .pipe(zlib.createGzip())
-      .pipe(fs.createWriteStream(outputPath));
-
-    process.nextTick(() => {
-      resolve(outputPath);
-    });
+      .pipe(fs.createWriteStream(outputPath))
+      .on("close", () => resolve(outputPath));
   });
 }
 
