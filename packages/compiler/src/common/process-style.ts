@@ -1,6 +1,6 @@
 import * as path from "path";
 import { hash } from "./hash";
-import { isSelector, isAtRule, isPsuedoSelector } from "./css";
+import { isAtRule, isPsuedoSelector } from "./css";
 
 export function processStyle(
   style: UnprocessedStyle,
@@ -31,19 +31,7 @@ export function processStyleDeclarations(
   resultStyle: Array<StyleDeclaration | AtRuleDeclaration>
 ) {
   for (let [key, value] of Object.entries(style)) {
-    if (isSelector(key)) {
-      let styleDeclaration = {
-        classNames: processSelectors(key, scope, parentStyle.classNames),
-        properties: []
-      };
-      resultStyle.push(styleDeclaration);
-      processStyleDeclarations(
-        scope,
-        style[key] as UnprocessedStyle,
-        styleDeclaration,
-        resultStyle
-      );
-    } else if (isAtRule(key)) {
+    if (isAtRule(key)) {
       let atRule: AtRuleDeclaration = {
         rule: key,
         styles: []
@@ -60,6 +48,18 @@ export function processStyleDeclarations(
         atRule.styles
       );
       resultStyle.push(atRule);
+    } else if (typeof value === "object") {
+      let styleDeclaration = {
+        classNames: processSelectors(key, scope, parentStyle.classNames),
+        properties: []
+      };
+      resultStyle.push(styleDeclaration);
+      processStyleDeclarations(
+        scope,
+        style[key] as UnprocessedStyle,
+        styleDeclaration,
+        resultStyle
+      );
     } else {
       parentStyle.properties.push({
         name: normalizePropertyName(key),
