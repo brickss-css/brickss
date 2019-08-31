@@ -11,7 +11,11 @@ const styles = css({
     padding: "10px"
   },
   ".something[state|inverse]": {
-    color: "#fff"
+    color: "#fff",
+    "::before, ::after": {
+      content: "",
+      display: "block"
+    }
   }
 });
 

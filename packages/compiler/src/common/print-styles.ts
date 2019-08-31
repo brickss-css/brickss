@@ -75,19 +75,9 @@ export function printStyleDeclaration(
 
   styleDeclaration.properties.forEach(({ name, value }) => {
     if (value.type === "identifier") {
-      // let defaultValue = `\$\{${value.value}\.defaultValue ? '${name}: ' + ${value.value}.defaultValue + ';' : '' }`;
-      // style.push(defaultValue.padStart(defaultValue.length + 2, " "));
-
-      // let val = `var(--\$\{${value.value}.name}, \$\{${value.value}.defaultValue || ''})`;
-      // let prop = name + ": " + val + ";";
-      // style.push(prop.padStart(prop.length + 2, " "));
-
       style.push({
         type: "cssVar",
-        value: {
-          name,
-          identifier: value.value
-        }
+        value: { name, identifier: value.value }
       });
     } else {
       style.push({ type: "static", value: name + ": " + value.value + ";" });

@@ -21,16 +21,13 @@ export function importRuntime(
     });
   }
 
-  return ts.createVariableDeclarationList(
-    [
-      ts.createVariableDeclaration(
-        runtimeIdentifier,
-        undefined,
-        ts.createCall(ts.createIdentifier("require"), undefined, [
-          ts.createStringLiteral("@brickss/runtime")
-        ])
-      )
-    ],
-    ts.NodeFlags.None
+  return ts.createImportDeclaration(
+    undefined,
+    undefined,
+    ts.createImportClause(
+      undefined,
+      ts.createNamespaceImport(runtimeIdentifier)
+    ),
+    ts.createStringLiteral("@brickss/runtime")
   );
 }

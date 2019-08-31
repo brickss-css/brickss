@@ -30,9 +30,9 @@ function render(inverse = false) {
 let inverse = true;
 document.addEventListener("click", e => {
   if ((e.target as HTMLElement).id === "update") {
+    inverse = !inverse;
     const className = styles({ inverse });
     document.querySelector("." + styles.scope).className = className;
-    inverse = !inverse;
   }
 });
 

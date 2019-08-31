@@ -96,12 +96,15 @@ export function processSelectors(
     });
 
     classNames.forEach(className => {
+      let isParentPsuedo = isPsuedoSelector(className.name);
       let newClassName = {
         name: buildClassName(
           className.name,
           cleanSelector,
           isPsuedo,
-          isElement
+          isElement,
+          isParentPsuedo,
+          scope
         ),
         modifiers
       };
@@ -120,12 +123,16 @@ export function buildClassName(
   parentClassName: string,
   cleanSelector: string,
   isPsuedo: boolean,
-  isElement: boolean
+  isElement: boolean,
+  isParentPsuedo: boolean,
+  scope: StyleScope
 ) {
   if (isPsuedo) {
     return parentClassName + cleanSelector;
   } else if (isElement) {
     return parentClassName + " " + cleanSelector;
+  } else if (isParentPsuedo) {
+    return parentClassName + " ." + scope.name + "__" + cleanSelector;
   }
   return parentClassName + "__" + cleanSelector;
 }

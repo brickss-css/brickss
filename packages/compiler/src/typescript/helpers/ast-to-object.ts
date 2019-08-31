@@ -15,7 +15,7 @@ export function buildObjectFromAST(
         ? buildObjectFromAST(prop.initializer as ts.ObjectLiteralExpression)
         : ts.isIdentifier(prop.initializer)
         ? { type: "identifier", value: prop.initializer.getText() }
-        : { type: "string", value: (prop.initializer as any).text };
+        : { type: "string", value: simpleString(prop.initializer) || '""' };
     }
   });
 

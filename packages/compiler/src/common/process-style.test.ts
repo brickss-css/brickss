@@ -28,11 +28,22 @@ let unprocessedStyle = {
     paddingTop: { type: "string", value: "10px" },
     paddingLeft: { type: "string", value: "10px" },
     paddingBottom: { type: "string", value: "10px" },
-    paddingRight: { type: "string", value: "10px" }
+    paddingRight: { type: "string", value: "10px" },
+    ":hover": {
+      ".icon": {
+        padding: { type: "string", value: "10px" }
+      }
+    }
   },
 
   ".icon[state|size=small]": {
-    padding: { type: "string", value: "20px" }
+    padding: { type: "string", value: "20px" },
+    ":hover": {
+      color: { type: "string", value: "red" }
+    },
+    "::before, ::after": {
+      content: { type: "string", value: "" }
+    }
   },
 
   ".something[state|inverse], .something-else": {
@@ -53,5 +64,7 @@ let filePath = "packages/something/button.ts";
 
 test("should process basic style", t => {
   let result = processStyle(unprocessedStyle, filePath);
+  // console.log(JSON.stringify(result, null, 2));
+  // t.pass();
   t.snapshot(result);
 });
