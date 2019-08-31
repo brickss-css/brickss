@@ -11,16 +11,13 @@
     - Babel + TypeScript
 - Dynamic values:
   - CSS variables based theming
-  - No other dynamic values
   - CSS-Blocks like state
 - Object styles
   - Nested scss style nesting
   - All css media, keyframe, etc...
 - Interoperability with emotion and styled-components themes
-- Async-loadable by default
 - More deterministic class names
   - Using filename + file hash
-- Minifiable by default
 - PostCSS + plugins
 - SSR – TBD
 
