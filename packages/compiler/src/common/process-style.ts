@@ -79,6 +79,7 @@ export function processSelectors(
     let modifiers = getModifiersFromSelector(sel);
     let cleanSelector = getCleanSelector(sel);
     let isPsuedo = isPsuedoSelector(cleanSelector);
+    let isElement = !isSelector(sel);
 
     modifiers.forEach(([name, value]) => {
       if (!scope.modifiers[name]) {
@@ -96,20 +97,37 @@ export function processSelectors(
 
     classNames.forEach(className => {
       let newClassName = {
-        name: isPsuedo
-          ? className.name + cleanSelector
-          : className.name + "__" + cleanSelector,
+        name: buildClassName(
+          className.name,
+          cleanSelector,
+          isPsuedo,
+          isElement
+        ),
         modifiers
       };
 
       acc.push(newClassName);
 
-      if (!isPsuedo) {
+      if (!isPsuedo && !isElement) {
         scope.nameToClass[cleanSelector] = newClassName.name;
       }
     });
     return acc;
   }, []);
+}
+
+export function buildClassName(
+  parentClassName: string,
+  cleanSelector: string,
+  isPsuedo: boolean,
+  isElement: boolean
+) {
+  if (isPsuedo) {
+    return parentClassName + cleanSelector;
+  } else if (isElement) {
+    return parentClassName + " " + cleanSelector;
+  }
+  return parentClassName + "__" + cleanSelector;
 }
 
 export function getScopeNameFromFilePath(filePath: string): string {

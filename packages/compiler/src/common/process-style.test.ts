@@ -10,6 +10,18 @@ let unprocessedStyle = {
 
   backgroundColor: { type: "string", value: "red" },
 
+  div: {
+    margin: { type: "string", value: "10px" }
+  },
+
+  "> div": {
+    margin: { type: "string", value: "20px" }
+  },
+
+  "div + div": {
+    margin: { type: "string", value: "30px" }
+  },
+
   ".something[state|inverse]": {
     color: { type: "string", value: "green" },
     fontSize: { type: "identifier", value: "myVar" },
@@ -36,8 +48,6 @@ let unprocessedStyle = {
     }
   }
 };
-
-// .scope--inverse .something
 
 let filePath = "packages/something/button.ts";
 
