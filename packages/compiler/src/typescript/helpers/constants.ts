@@ -1,2 +1,3 @@
 import * as ts from "typescript";
-export const runtimeIdentifier = ts.createUniqueName("runtime");
+let runtimeIdentifier = ts.createUniqueName("runtime");
+export { runtimeIdentifier };

@@ -3,6 +3,7 @@ import { StyleScope } from "../../common/process-style";
 import { printStyles, PrintableValue } from "../../common/print-styles";
 import { runtimeIdentifier } from "../helpers/constants";
 import { createCssVarWithDefault } from "./css-var-with-default";
+import { randomId } from "../../common/hash";
 
 export function createBricksStyleFunction(stylesScope: StyleScope) {
   let styles = printStyles(stylesScope);
@@ -34,7 +35,7 @@ export function createBricksStyleFunction(stylesScope: StyleScope) {
             ),
             undefined,
             [
-              ts.createStringLiteral(stylesScope.name),
+              ts.createStringLiteral(stylesScope.name + "__" + randomId()),
               buildStringFromStyles(styles)
             ]
           )

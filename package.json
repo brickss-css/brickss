@@ -6,12 +6,13 @@
   "scripts": {
     "test": "ava",
     "build": "tsc -b ./",
+    "build:example": "yarn workspace @brickss/examples build",
     "lint:staged": "lint-staged",
     "postinstall": "npm run build"
   },
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples"
   ],
   "repository": {
     "type": "git",
@@ -26,7 +27,6 @@
   "devDependencies": {
     "ava": "^2.3.0",
     "lint-staged": "^9.2.4",
-    "parcel": "^1.12.3",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
     "terser": "^4.2.1",

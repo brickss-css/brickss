@@ -1,6 +1,7 @@
 tsconfig.tsbuildinfo
 .cache
 dist/
+examples/examples/**/*.js
 node_modules
 *.gz
 .DS_Store

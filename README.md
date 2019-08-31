@@ -4,7 +4,8 @@
 
 ### Basic example:
 
-`yarn workspace @brickss-examples/basic start`
+`yarn build:example` or
+`yarn build:example basic`
 
 - Small runtime < 300b min + gzip
   - Ahead of time compilation
