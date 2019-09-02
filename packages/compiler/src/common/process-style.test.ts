@@ -8,6 +8,15 @@ let unprocessedStyle = {
     color: { type: "string", value: "green" }
   },
 
+  "[state|inverse]": {
+    color: { type: "string", value: "red" },
+
+    ".something[state|inverse], .something-else": {
+      color: { type: "string", value: "green" },
+      fontSize: { type: "identifier", value: "myVar" }
+    }
+  },
+
   backgroundColor: { type: "string", value: "red" },
 
   div: {
@@ -64,7 +73,5 @@ let filePath = "packages/something/button.ts";
 
 test("should process basic style", t => {
   let result = processStyle(unprocessedStyle, filePath);
-  // console.log(JSON.stringify(result, null, 2));
-  // t.pass();
-  t.snapshot(result);
+  t.snapshot(JSON.stringify(result, null, 2));
 });
