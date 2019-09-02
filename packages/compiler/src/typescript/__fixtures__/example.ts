@@ -23,6 +23,11 @@ const styles = css({
       content: "",
       display: "block"
     }
+  },
+  "[state|inverse]": {
+    ".icon": {
+      color: "#000"
+    }
   }
 });
 

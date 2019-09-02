@@ -105,7 +105,6 @@ export function processSelectors(
           cleanSelector,
           isPsuedo,
           isElement,
-          isTopLevelModifier,
           isParentPsuedo,
           scope
         }),
@@ -118,7 +117,7 @@ export function processSelectors(
 
       acc.push(newClassName);
 
-      if (!isPsuedo && !isElement) {
+      if (!isPsuedo && !isElement && cleanSelector) {
         scope.nameToClass[cleanSelector] = newClassName.name;
       }
     });
@@ -132,7 +131,6 @@ export function buildClassName({
   isPsuedo,
   isElement,
   isParentPsuedo,
-  isTopLevelModifier,
   scope
 }: {
   parentClassName: string;
@@ -140,7 +138,6 @@ export function buildClassName({
   isPsuedo: boolean;
   isElement: boolean;
   isParentPsuedo: boolean;
-  isTopLevelModifier: boolean;
   scope: StyleScope;
 }) {
   if (!cleanSelector) {
