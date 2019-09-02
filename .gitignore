@@ -6,4 +6,4 @@ node_modules
 *.gz
 .DS_Store
 *.log
-./packages/compiler/src/typescript/**/*.js
+packages/compiler/src/typescript/__fixtures__/*.js
