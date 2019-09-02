@@ -66,7 +66,9 @@ export function printStyleDeclaration(
     .map(className => {
       let modifiers = buildModifiers(scope.name, className.modifiers);
       return modifiers
-        ? "." + modifiers + " ." + className.name
+        ? className.scopeModifier
+          ? "." + modifiers
+          : "." + modifiers + " ." + className.name
         : "." + className.name;
     })
     .join(", ");

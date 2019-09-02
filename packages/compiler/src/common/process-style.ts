@@ -1,6 +1,6 @@
 import * as path from "path";
 import { hash } from "./hash";
-import { isSelector, isAtRule, isPsuedoSelector } from "./css";
+import { isSelector, isAtRule, isPsuedoSelector, isModifier } from "./css";
 
 export function processStyle(
   style: UnprocessedStyle,
@@ -80,6 +80,7 @@ export function processSelectors(
     let cleanSelector = getCleanSelector(sel);
     let isPsuedo = isPsuedoSelector(cleanSelector);
     let isElement = !isSelector(sel);
+    let isTopLevelModifier = isModifier(sel);
 
     modifiers.forEach(([name, value]) => {
       if (!scope.modifiers[name]) {
@@ -97,16 +98,22 @@ export function processSelectors(
 
     classNames.forEach(className => {
       let isParentPsuedo = isPsuedoSelector(className.name);
-      let newClassName = {
-        name: buildClassName(
-          className.name,
+
+      let newClassName: ClassName = {
+        name: buildClassName({
+          parentClassName: className.name,
           cleanSelector,
           isPsuedo,
           isElement,
+          isTopLevelModifier,
           isParentPsuedo,
           scope
-        ),
-        modifiers
+        }),
+        scopeModifier: isTopLevelModifier,
+        modifiers: ([] as ClassName["modifiers"]).concat(
+          modifiers,
+          className.modifiers
+        )
       };
 
       acc.push(newClassName);
@@ -119,15 +126,26 @@ export function processSelectors(
   }, []);
 }
 
-export function buildClassName(
-  parentClassName: string,
-  cleanSelector: string,
-  isPsuedo: boolean,
-  isElement: boolean,
-  isParentPsuedo: boolean,
-  scope: StyleScope
-) {
-  if (isPsuedo) {
+export function buildClassName({
+  parentClassName,
+  cleanSelector,
+  isPsuedo,
+  isElement,
+  isParentPsuedo,
+  isTopLevelModifier,
+  scope
+}: {
+  parentClassName: string;
+  cleanSelector: string;
+  isPsuedo: boolean;
+  isElement: boolean;
+  isParentPsuedo: boolean;
+  isTopLevelModifier: boolean;
+  scope: StyleScope;
+}) {
+  if (!cleanSelector) {
+    return parentClassName;
+  } else if (isPsuedo) {
     return parentClassName + cleanSelector;
   } else if (isElement) {
     return parentClassName + " " + cleanSelector;
@@ -190,6 +208,7 @@ export type CSSProperty = {
 export type ClassName = {
   name: string;
   modifiers: Array<[string, string]>;
+  scopeModifier?: boolean;
 };
 
 export type StyleScope = {
