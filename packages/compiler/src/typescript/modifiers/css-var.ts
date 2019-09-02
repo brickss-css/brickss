@@ -21,9 +21,7 @@ export function cssVarModifier(node: ts.CallExpression) {
         ),
         ts.createPropertyAssignment(
           ts.createIdentifier("defaultValue"),
-          defaultValue
-            ? ts.createStringLiteral(simpleString(defaultValue))
-            : ts.createIdentifier("undefined")
+          defaultValue || ts.createIdentifier("undefined")
         )
       ],
       true
