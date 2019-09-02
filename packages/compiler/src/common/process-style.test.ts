@@ -66,6 +66,18 @@ let unprocessedStyle = {
     ".something[state|inverse]": {
       color: { type: "string", value: "blue" }
     }
+  },
+
+  "[state|info]": {
+    ".icon": {
+      color: { type: "string", value: "#0052CC" }
+    }
+  },
+
+  "[state|note]": {
+    ".icon": {
+      color: { type: "string", value: "#0052CC" }
+    }
   }
 };
 
