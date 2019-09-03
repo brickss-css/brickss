@@ -1,11 +1,11 @@
 import * as ts from "typescript";
-import { StyleScope } from "../../common/process-style";
 import { printStyles, PrintableValue } from "../../common/print-styles";
 import { runtimeIdentifier } from "../helpers/constants";
 import { createCssVarWithDefault } from "./css-var-with-default";
 import { randomId } from "../../common/hash";
+import { RootScope } from "../../common/compiler";
 
-export function createBricksStyleFunction(stylesScope: StyleScope) {
+export function createBricksStyleFunction(stylesScope: RootScope) {
   let styles = printStyles(stylesScope);
   let id = ts.createUniqueName("brickss");
   return ts.createFunctionExpression(
@@ -40,7 +40,7 @@ export function createBricksStyleFunction(stylesScope: StyleScope) {
             ]
           )
         ),
-        ...Object.entries(stylesScope.nameToClass).map(([name, value]) => {
+        ...Object.entries(stylesScope.selectorsToClass).map(([name, value]) => {
           return ts.createExpressionStatement(
             ts.createBinary(
               ts.createPropertyAccess(id, ts.createIdentifier(name)),

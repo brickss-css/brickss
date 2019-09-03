@@ -1,9 +1,9 @@
 import {
-  StyleScope,
+  RootScope,
+  AtRuleDeclaration,
   StyleDeclaration,
-  isStyleDeclaration,
-  AtRuleDeclaration
-} from "./process-style";
+  isStyleDeclaration
+} from "./compiler";
 
 export type PrintableValueCSSVar = {
   type: "cssVar";
@@ -13,7 +13,7 @@ export type PrintableValue =
   | { type: "static"; value: string }
   | PrintableValueCSSVar;
 
-export function printStyles(scope: StyleScope) {
+export function printStyles(scope: RootScope) {
   let styles = scope.styles
     .reduce<Array<PrintableValue>>((acc, style) => {
       if (isStyleDeclaration(style)) {
@@ -34,7 +34,7 @@ export function printStyles(scope: StyleScope) {
   return styles;
 }
 
-export function printAtRule(scope: StyleScope, atRule: AtRuleDeclaration) {
+export function printAtRule(scope: RootScope, atRule: AtRuleDeclaration) {
   if (!atRule.styles.length) {
     return [{ type: "static", value: "" }] as Array<PrintableValue>;
   }
@@ -54,7 +54,7 @@ export function printAtRule(scope: StyleScope, atRule: AtRuleDeclaration) {
 }
 
 export function printStyleDeclaration(
-  scope: StyleScope,
+  scope: RootScope,
   styleDeclaration: StyleDeclaration
 ) {
   if (!styleDeclaration.properties.length) {
@@ -62,18 +62,11 @@ export function printStyleDeclaration(
   }
 
   let style: Array<PrintableValue> = [];
-  let classNames = styleDeclaration.classNames
-    .map(className => {
-      let modifiers = buildModifiers(scope.name, className.modifiers);
-      return modifiers
-        ? className.scopeModifier
-          ? "." + modifiers
-          : "." + modifiers + " ." + className.name
-        : "." + className.name;
-    })
+  let selector = styleDeclaration.selectors
+    .map(selector => selector.compiled)
     .join(", ");
 
-  style.push({ type: "static", value: classNames + " {" });
+  style.push({ type: "static", value: selector + " {" });
 
   styleDeclaration.properties.forEach(({ name, value }) => {
     if (value.type === "identifier") {
@@ -88,16 +81,4 @@ export function printStyleDeclaration(
 
   style.push({ type: "static", value: "}" });
   return style;
-}
-
-export function buildModifiers(
-  scopeName: string,
-  modifiers: Array<[string, string]>
-) {
-  return modifiers
-    .map(
-      ([name, value]) =>
-        scopeName + "--" + name + (value === "boolean" ? "" : "-" + value)
-    )
-    .join(".");
 }
