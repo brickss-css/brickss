@@ -1,11 +1,9 @@
 import * as ts from "typescript";
-import { UnprocessedStyle } from "../../common/process-style";
 import { simpleString } from "./simple-string";
+import { RawStyle } from "../../common/compiler";
 
-export function buildObjectFromAST(
-  node: ts.ObjectLiteralExpression
-): UnprocessedStyle {
-  let style: UnprocessedStyle = {};
+export function buildObjectFromAST(node: ts.ObjectLiteralExpression): RawStyle {
+  let style: RawStyle = {};
 
   node.properties.forEach(prop => {
     if (ts.isPropertyAssignment(prop)) {

@@ -18,3 +18,13 @@ export function isPsuedoSelector(str: string): boolean {
 export function isAtRule(str: string): boolean {
   return str.startsWith("@");
 }
+
+export function isElementSelector(str: string): boolean {
+  return (
+    !isPsuedoSelector(str) &&
+    !isModifier(str) &&
+    !str.startsWith(".") &&
+    !str.startsWith("#") &&
+    !str.startsWith("[")
+  );
+}

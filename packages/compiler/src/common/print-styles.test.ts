@@ -1,6 +1,6 @@
 import test from "ava";
 import { printStyles, PrintableValue } from "./print-styles";
-import { processStyle } from "./process-style";
+import { Compiler } from "./compiler";
 
 let unprocessedStyle = {
   color: { type: "string", value: "red" },
@@ -68,7 +68,7 @@ let unprocessedStyle = {
       color: { type: "string", value: "blue" }
     }
   }
-};
+} as const;
 
 let filePath = "packages/something/button.ts";
 
@@ -83,8 +83,7 @@ let stringfy = (styles: Array<PrintableValue>) =>
     .join("");
 
 test("should process basic style", async t => {
-  let result = await printStyles(processStyle(unprocessedStyle, filePath));
-  // console.log(stringfy(result));
-  // t.pass();
+  let compiler = new Compiler("button", unprocessedStyle);
+  let result = printStyles(compiler.run());
   t.snapshot(stringfy(result));
 });

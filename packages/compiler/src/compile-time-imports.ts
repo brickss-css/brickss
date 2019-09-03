@@ -1,5 +1,5 @@
 export interface CSS {
-  [key: string]: string | CSS;
+  [key: string]: string | number | CSS;
 }
 
 export function css(_style: CSS) {
