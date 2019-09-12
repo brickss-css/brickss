@@ -1,4 +1,5 @@
 import { isPsuedoSelector, isElementSelector, isAtRule } from "./css";
+import { CompilationError } from "./errors";
 
 /**
  * Compiles Brickss RawStyles to a denormalised intermediate representation.
@@ -87,6 +88,9 @@ export class Compiler {
     });
   }
 
+  /**
+   * Processes a string selector into Selector object. Compiles modifiers, etc...
+   */
   private processSelector(
     selectorString: string,
     parentSelectors: Array<Selector>
@@ -99,6 +103,19 @@ export class Compiler {
       isElement,
       isComposite
     } = this.parseSelector(selectorString);
+
+    // ERROR: Modifiers are not allowed in composite selectors
+    if (isComposite && modifiers.length) {
+      throw new CompilationError(
+        "BSS1000",
+        `State is not allowed in composite selectors "${selectorString}"`,
+        [
+          "Try splitting complex selectors into simpler ones, example:",
+          'Before: "[state|foo] > .selector": {}',
+          'After:  "[state|foo]": { "> .selector": {} }'
+        ].join("\n")
+      );
+    }
 
     if (isComposite) {
       cleanSelector = this.processCompositeSelector(selectorString);
@@ -176,6 +193,9 @@ export class Compiler {
     return compiledSelector;
   }
 
+  /**
+   * Merges parent and current modifiers and returns compiled selector for modifiers.
+   */
   private processModifiers(
     modifiers: Array<[string, string]>,
     parentModifiers: Array<[string, string]>
@@ -212,6 +232,11 @@ export class Compiler {
     return { combinedModifiers, compiledModifiers };
   }
 
+  /**
+   * For composite selectors prefixes subselectors and registers then on selectorToClass map.
+   * .button > .icon
+   * .scope__button > .scope__icon
+   */
   private processCompositeSelector(selectorString: string): string {
     return selectorString
       .split(" ")
@@ -233,10 +258,13 @@ export class Compiler {
       .join(" ");
   }
 
+  /**
+   * Retrieves data from selector string.
+   */
   private parseSelector(selectorString: string) {
-    let isComposite = selectorString.includes(" ");
-    let cleanSelector = this.getCleanSelector(selectorString);
     let modifiers = this.getModifiersFromSelector(selectorString);
+    let cleanSelector = this.getCleanSelector(selectorString);
+    let isComposite = selectorString.includes(" ");
     let isPsuedo = isPsuedoSelector(cleanSelector);
     let isModifier = Boolean(!cleanSelector && modifiers.length);
     let isElement = isElementSelector(selectorString);

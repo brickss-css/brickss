@@ -39,6 +39,7 @@ let unprocessedStyle = {
     paddingLeft: { type: "string", value: "10px" },
     paddingBottom: { type: "string", value: "10px" },
     paddingRight: { type: "string", value: "10px" },
+
     ":hover": {
       ".icon": {
         padding: { type: "string", value: "10px" }

@@ -1,5 +1,6 @@
 import test from "ava";
 import { Compiler } from "./compiler";
+import { CompilationError } from "./errors";
 
 test("Compiler: should compile styles with just properties", t => {
   let compiler = new Compiler("test-hash", {
@@ -156,4 +157,20 @@ test("Compiler: should support @media rule", t => {
   } as const);
   let rootScope = compiler.run();
   t.snapshot(JSON.stringify(rootScope, null, 2));
+});
+
+test("Compiler: should throw [BSS1000] on modifiers in composite selectors", t => {
+  let compiler = new Compiler("test-hash", {
+    "[state|inverse] .icon": {}
+  } as const);
+  let error = t.throws(() => compiler.run());
+  t.true(error.message.includes("BSS1000"));
+});
+
+test("Compiler: should throw [BSS1000] on modifiers in composite selectors [case 2]", t => {
+  let compiler = new Compiler("test-hash", {
+    "> .icon[state|inverse]  .foo .something[state|size=small]": {}
+  } as const);
+  let error = t.throws(() => compiler.run());
+  t.true(error.message.includes("BSS1000"));
 });
