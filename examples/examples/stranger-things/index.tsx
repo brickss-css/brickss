@@ -101,7 +101,7 @@ let cardStyles = css({
     fontWeight: "700",
 
     "::after": {
-      content: "'\2192'",
+      content: "'\\2192'",
       opacity: "0",
       position: "absolute",
       right: "0",

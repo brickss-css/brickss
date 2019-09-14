@@ -19,7 +19,7 @@ function render(inverse = false) {
   console.log("rendering");
   const root = document.getElementById("root");
   const className = styles({ inverse });
-  root!.innerHTML = `
+  root.innerHTML = `
     <div class="${className}">
       <p class="${styles.something}">Hello Sam</p>
       <button id="update">Toggle Inverse</button>
@@ -29,7 +29,7 @@ function render(inverse = false) {
 
 let inverse = true;
 document.addEventListener("click", e => {
-  if ((e.target as HTMLElement).id === "update") {
+  if (e.target.id === "update") {
     inverse = !inverse;
     const className = styles({ inverse });
     document.querySelector("." + styles.scope).className = className;
