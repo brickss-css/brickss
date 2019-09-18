@@ -2,7 +2,11 @@ import { types as t } from "@babel/core";
 import template from "@babel/template";
 import { hash, randomId } from "../../common/hash";
 import { safeProp } from "../../common/safe-prop";
-import { RawStyle, Compiler, RootScope } from "../../common/compiler";
+import {
+  RawStyle,
+  StylesCompiler,
+  RootScope
+} from "../../common/styles-compiler";
 import { scopeVariable } from "../../common/scope-variable";
 import { runtimeIdentifier } from "../helpers/constants";
 import {
@@ -26,7 +30,7 @@ export function css(path: any, fileName: string) {
   let stylesObject = buildObjectFromAST(node
     .arguments[0] as t.ObjectExpression);
 
-  let compiler = new Compiler(scopeName, stylesObject);
+  let compiler = new StylesCompiler(scopeName, stylesObject);
   let stylesScope = compiler.run();
 
   path.replaceWith(createBrickssStyleFunction(stylesScope));

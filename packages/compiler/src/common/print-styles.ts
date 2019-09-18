@@ -3,7 +3,7 @@ import {
   AtRuleDeclaration,
   StyleDeclaration,
   isStyleDeclaration
-} from "./compiler";
+} from "./styles-compiler";
 
 export type PrintableValueCSSVar = {
   type: "cssVar";

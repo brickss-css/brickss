@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { simpleString } from "./simple-string";
-import { RawStyle } from "../../common/compiler";
+import { RawStyle } from "../../common/styles-compiler";
 
 export function buildObjectFromAST(node: ts.ObjectLiteralExpression): RawStyle {
   let style: RawStyle = {};

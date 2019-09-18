@@ -2,11 +2,11 @@ import * as ts from "typescript";
 import { createBricksStyleFunction } from "../builders/bricks-style-fn";
 import { buildObjectFromAST } from "../helpers/ast-to-object";
 import { randomId, getScopeNameFromFilePath } from "../../common/hash";
-import { Compiler } from "../../common/compiler";
+import { StylesCompiler } from "../../common/styles-compiler";
 
 export function css(node: ts.CallExpression) {
   let scopeName = getScopeNameFromFilePath(node.getSourceFile().fileName);
-  let compiler = new Compiler(
+  let compiler = new StylesCompiler(
     scopeName,
     buildObjectFromAST(node.arguments[0] as ts.ObjectLiteralExpression)
   );

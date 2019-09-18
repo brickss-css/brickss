@@ -1,9 +1,8 @@
 import test from "ava";
-import { Compiler } from "./compiler";
-import { CompilationError } from "./errors";
+import { StylesCompiler } from "./styles-compiler";
 
 test("Compiler: should compile styles with just properties", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     color: { type: "string", value: "red" }
   } as const);
   let rootScope = compiler.run();
@@ -11,7 +10,7 @@ test("Compiler: should compile styles with just properties", t => {
 });
 
 test("Compiler: should compile styles with simple selector", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     ".simple-selector": {
       color: { type: "string", value: "red" }
     }
@@ -21,7 +20,7 @@ test("Compiler: should compile styles with simple selector", t => {
 });
 
 test("Compiler: should compile styles with modifier only selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "[state|inverse]": {
       color: { type: "string", value: "red" }
     },
@@ -39,7 +38,7 @@ test("Compiler: should compile styles with modifier only selectors", t => {
 });
 
 test("Compiler: should compile styles with nested inside modifier selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "[state|inverse|size=small]": {
       ":hover": {
         color: { type: "string", value: "red" }
@@ -59,7 +58,7 @@ test("Compiler: should compile styles with nested inside modifier selectors", t 
 });
 
 test("Compiler: should compile styles with multiple modifiers permutations", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "[state|inverse]": {
       ".something[state|size=small], .something-else": {
         ".button": {}
@@ -71,7 +70,7 @@ test("Compiler: should compile styles with multiple modifiers permutations", t =
 });
 
 test("Compiler: should compile styles with selectors: '[state|inverse], .icon[state|warning]'", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "[state|inverse], .icon[state|warning]": {}
   } as const);
   let rootScope = compiler.run();
@@ -79,7 +78,7 @@ test("Compiler: should compile styles with selectors: '[state|inverse], .icon[st
 });
 
 test("Compiler: should compile styles with selectors: '> .something'", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "> .something": {}
   } as const);
   let rootScope = compiler.run();
@@ -87,7 +86,7 @@ test("Compiler: should compile styles with selectors: '> .something'", t => {
 });
 
 test("Compiler: should support element selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     ".title": {
       marginTop: { type: "string", value: "10px" },
       a: {
@@ -100,7 +99,7 @@ test("Compiler: should support element selectors", t => {
 });
 
 test("Compiler: should support selectors 'div + div'", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "div + div": {
       margin: { type: "string", value: "30px" }
     }
@@ -110,7 +109,7 @@ test("Compiler: should support selectors 'div + div'", t => {
 });
 
 test("Compiler: should support nested selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     ".something[state|inverse]": {
       color: { type: "string", value: "green" },
       fontSize: { type: "identifier", value: "myVar" },
@@ -130,7 +129,7 @@ test("Compiler: should support nested selectors", t => {
 });
 
 test("Compiler: should support multiple psuedo elements/selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     ".icon[state|size=small]": {
       padding: { type: "string", value: "20px" },
       ":hover": {
@@ -146,7 +145,7 @@ test("Compiler: should support multiple psuedo elements/selectors", t => {
 });
 
 test("Compiler: should support @media rule", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "@media screen and (min-width: 900px)": {
       color: { type: "string", value: "black" },
 
@@ -160,7 +159,7 @@ test("Compiler: should support @media rule", t => {
 });
 
 test("Compiler: should throw [BSS1000] on modifiers in composite selectors", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "[state|inverse] .icon": {}
   } as const);
   let error = t.throws(() => compiler.run());
@@ -168,7 +167,7 @@ test("Compiler: should throw [BSS1000] on modifiers in composite selectors", t =
 });
 
 test("Compiler: should throw [BSS1000] on modifiers in composite selectors [case 2]", t => {
-  let compiler = new Compiler("test-hash", {
+  let compiler = new StylesCompiler("test-hash", {
     "> .icon[state|inverse]  .foo .something[state|size=small]": {}
   } as const);
   let error = t.throws(() => compiler.run());
