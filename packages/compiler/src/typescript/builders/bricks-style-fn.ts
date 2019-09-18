@@ -3,7 +3,7 @@ import { printStyles, PrintableValue } from "../../common/print-styles";
 import { runtimeIdentifier } from "../helpers/constants";
 import { createCssVarWithDefault } from "./css-var-with-default";
 import { randomId } from "../../common/hash";
-import { RootScope } from "../../common/compiler";
+import { RootScope } from "../../common/styles-compiler";
 
 export function createBricksStyleFunction(stylesScope: RootScope) {
   let styles = printStyles(stylesScope);

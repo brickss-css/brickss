@@ -4,7 +4,7 @@ import { CompilationError } from "./errors";
 /**
  * Compiles Brickss RawStyles to a denormalised intermediate representation.
  */
-export class Compiler {
+export class StylesCompiler {
   private root: RootScope;
   private rawStyle: RawStyle;
 
