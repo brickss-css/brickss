@@ -69,7 +69,23 @@ render(inverse);
 `;
 
 test("Babel: test transform", t => {
-  let transformed = babel.transform(source, options).code;
-  console.log(transformed);
-  t.pass();
+  t.notThrows(() => {
+    let transformed = babel.transform(source, options).code;
+    console.log(transformed);
+  });
+});
+
+test("Babel: should throw [BSS1001] when an argument of 'css' function is not an ObjectExpression", t => {
+  let error = t.throws(
+    () =>
+      babel.transform(
+        `
+  import { css } from "@brickss/compiler";
+  const b = 123;
+  const styles = css(b);
+  `,
+        options
+      ).code
+  );
+  t.true(error.message.includes("BSS1001"));
 });
