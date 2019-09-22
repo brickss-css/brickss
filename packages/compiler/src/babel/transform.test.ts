@@ -8,7 +8,7 @@ let options = {
 };
 
 let source = `
-import { css, cssVar } from "@brickss/compiler";
+import { css as cs, cssVar } from "@brickss/compiler";
 
 const randomHeight = () => Math.random();
 const myVar = cssVar("my-font-size", "13px");
@@ -16,7 +16,7 @@ const dynamicValueCssVar = cssVar("height", \`$\{randomHeight() * 100}px\`);
 
 export const exportedCssVar = cssVar("my-font-size-2", "15px");
 
-const styles = css({
+const styles = cs({
   background: "green",
   fontSize: myVar,
   lineHeight: exportedCssVar,

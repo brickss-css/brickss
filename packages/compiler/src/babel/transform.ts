@@ -5,21 +5,24 @@ import { cssVar } from "./modifiers/css-var";
 import { css } from "./modifiers/css";
 import { randomId } from "../common/hash";
 import { safeProp } from "../common/safe-prop";
+import { TransformationContext } from "./transformation-context";
 
 module.exports = declare(() => {
   return {
     visitor: {
       Program: {
         enter(path: any, state: any) {
-          let fileName = safeProp(state, "file.opts.fileName", randomId());
+          let tctx = new TransformationContext(
+            safeProp(state, "file.opts.fileName", randomId())
+          );
 
           path.traverse({
             ImportDeclaration(path: any) {
-              importRuntime(path);
+              importRuntime(tctx, path);
             },
             CallExpression(path: any) {
-              cssVar(path, fileName);
-              css(path, fileName);
+              cssVar(tctx, path);
+              css(tctx, path);
             }
           });
         }

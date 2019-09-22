@@ -8,23 +8,22 @@ import {
   RootScope
 } from "../../common/styles-compiler";
 import { scopeVariable } from "../../common/scope-variable";
-import { runtimeIdentifier } from "../helpers/constants";
 import {
   PrintableValue,
   printStyles,
   PrintableValueCSSVar
 } from "../../common/print-styles";
+import { TransformationContext } from "../transformation-context";
 
-export function css(path: any, fileName: string) {
+export function css(tctx: TransformationContext, path: any) {
   let node: t.CallExpression = path.node;
 
-  // TODO: improve detection
-  if (!node || !node.callee || (node.callee as t.Identifier).name !== "css") {
+  if (!tctx.isBrickssImport("css", node.callee, path)) {
     return;
   }
 
   let varName = safeProp(path, "parent.id.name", randomId());
-  let scopeName = varName + "-" + hash(fileName);
+  let scopeName = varName + "-" + hash(tctx.fileName);
 
   // TODO: check that an argument is actually an object
   let stylesObject = buildObjectFromAST(node
@@ -33,7 +32,7 @@ export function css(path: any, fileName: string) {
   let compiler = new StylesCompiler(scopeName, stylesObject);
   let stylesScope = compiler.run();
 
-  path.replaceWith(createBrickssStyleFunction(stylesScope));
+  path.replaceWith(createBrickssStyleFunction(tctx, stylesScope));
 }
 
 function buildObjectFromAST(node: t.ObjectExpression) {
@@ -75,12 +74,15 @@ let brickssStyleFn = template(`
   }
 `);
 
-function createBrickssStyleFunction(stylesScope: RootScope) {
+function createBrickssStyleFunction(
+  tctx: TransformationContext,
+  stylesScope: RootScope
+) {
   let styles = printStyles(stylesScope);
   let fnName = t.identifier(scopeVariable("brickss"));
   return (brickssStyleFn({
     name: fnName,
-    runtime: t.identifier(runtimeIdentifier),
+    runtime: t.identifier(tctx.runtimeIdentifier),
     selectorToClassMap: Object.entries(stylesScope.selectorsToClass).map(
       ([name, value]) =>
         t.expressionStatement(
