@@ -14,16 +14,26 @@ import {
   PrintableValueCSSVar
 } from "../../common/print-styles";
 import { TransformationContext } from "../transformation-context";
+import { CompilationError } from "../../common/errors";
 
 export function css(tctx: TransformationContext, path: any) {
   let node: t.CallExpression = path.node;
+  let callee: t.Identifier = node.callee as t.Identifier;
 
-  if (!tctx.isBrickssImport("css", node.callee, path)) {
+  if (!tctx.isBrickssImport("css", callee, path)) {
     return;
   }
 
   let varName = safeProp(path, "parent.id.name", randomId());
   let scopeName = varName + "-" + hash(tctx.fileName);
+  let rawStyles = node.arguments[0];
+
+  if (!t.isObjectExpression(rawStyles)) {
+    throw new CompilationError(
+      "BSS1001",
+      `Argument of brickss "css" function ("${callee.name}") must be an object expression: "{}", instead got: "${callee.type}"`
+    );
+  }
 
   // TODO: check that an argument is actually an object
   let stylesObject = buildObjectFromAST(node
