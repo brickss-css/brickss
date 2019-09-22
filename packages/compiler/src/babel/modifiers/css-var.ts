@@ -1,16 +1,12 @@
 import { types as t } from "@babel/core";
 import { hash } from "../../common/hash";
 import { safeProp } from "../../common/safe-prop";
+import { TransformationContext } from "../transformation-context";
 
-export function cssVar(path: any, fileName: string) {
+export function cssVar(tctx: TransformationContext, path: any) {
   let node: t.CallExpression = path.node;
 
-  // TODO: improve detection
-  if (
-    !node ||
-    !node.callee ||
-    (node.callee as t.Identifier).name !== "cssVar"
-  ) {
+  if (!tctx.isBrickssImport("cssVar", node.callee, path)) {
     return;
   }
 
@@ -22,7 +18,7 @@ export function cssVar(path: any, fileName: string) {
     t.objectExpression([
       t.objectProperty(
         t.identifier("name"),
-        t.stringLiteral(`${name}__${hash(varName + fileName)}`)
+        t.stringLiteral(`${name}__${hash(varName + tctx.fileName)}`)
       ),
       t.objectProperty(
         t.identifier("defaultValue"),

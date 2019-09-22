@@ -1,6 +1,6 @@
 import test from "ava";
 import { printStyles, PrintableValue } from "./print-styles";
-import { Compiler } from "./compiler";
+import { StylesCompiler } from "./styles-compiler";
 
 let unprocessedStyle = {
   color: { type: "string", value: "red" },
@@ -84,7 +84,7 @@ let stringfy = (styles: Array<PrintableValue>) =>
     .join("");
 
 test("should process basic style", async t => {
-  let compiler = new Compiler("button", unprocessedStyle);
+  let compiler = new StylesCompiler("button", unprocessedStyle);
   let result = printStyles(compiler.run());
   t.snapshot(stringfy(result));
 });
