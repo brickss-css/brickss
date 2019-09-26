@@ -19,11 +19,13 @@ export class TransformationContext {
   }
 
   isBrickssImport(type: "css" | "cssVar", node: any, localPath: any) {
-    if (!node || !t.isIdentifier(node)) {
-      return false;
-    }
+    if (!node || !t.isIdentifier(node)) return false;
 
     let name = node.name;
+    let binding = localPath.scope.getBinding(name);
+
+    if (!binding) return false;
+
     let parent = localPath.scope.getBinding(name).path.parent;
 
     return (
