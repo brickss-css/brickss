@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { css, cssVar } from "@brickss/compiler";
+import { css } from "@brickss/compiler";
 
 let appStyles = css({
   a: {

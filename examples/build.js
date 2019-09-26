@@ -43,7 +43,10 @@ async function bundle(filePath, outputPath) {
             "Children",
             "Component",
             "PropTypes",
-            "createElement"
+            "createElement",
+            "useState",
+            "useEffect",
+            "useRef"
           ],
           "../node_modules/react-dom/index.js": ["render"]
         }
