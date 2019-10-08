@@ -42,6 +42,7 @@ async function bundle(filePath, outputPath) {
           "../node_modules/react/index.js": [
             "Children",
             "Component",
+            "Fragment",
             "PropTypes",
             "createElement",
             "useState",
