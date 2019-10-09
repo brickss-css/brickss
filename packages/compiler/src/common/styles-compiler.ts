@@ -149,7 +149,8 @@ export class StylesCompiler {
         scopedSelector,
         compiledModifiers,
         parent,
-        isPsuedo
+        isPsuedo,
+        isModifier
       );
 
       return {
@@ -174,7 +175,8 @@ export class StylesCompiler {
     scopedSelector: string,
     compiledModifiers: string,
     parent: Selector,
-    isPsuedo: boolean
+    isPsuedo: boolean,
+    isModifier: boolean
   ) {
     let compiledSelector = scopedSelector;
 
@@ -185,6 +187,8 @@ export class StylesCompiler {
           : compiledModifiers + scopedSelector;
       } else if (scopedSelector) {
         compiledSelector = compiledModifiers + " " + scopedSelector;
+      } else if (isModifier && !scopedSelector && parent.scope) {
+        compiledSelector = compiledModifiers + " " + parent.scope;
       } else {
         compiledSelector = compiledModifiers;
       }

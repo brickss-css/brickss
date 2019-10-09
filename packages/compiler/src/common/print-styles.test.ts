@@ -18,6 +18,12 @@ let unprocessedStyle = {
     }
   },
 
+  ".something": {
+    "[state|foo]": {
+      backgroundColor: { type: "string", value: "red" }
+    }
+  },
+
   backgroundColor: { type: "string", value: "red" },
 
   div: {
