@@ -173,3 +173,17 @@ test("Compiler: should throw [BSS1000] on modifiers in composite selectors [case
   let error = t.throws(() => compiler.run());
   t.true(error.message.includes("BSS1000"));
 });
+
+test("Compiler: should compile nested state selector", t => {
+  let compiler = new StylesCompiler("test-hash", {
+    ".simple-selector": {
+      color: { type: "string", value: "green" },
+
+      "[state|foo]": {
+        color: { type: "string", value: "red" }
+      }
+    }
+  } as const);
+  let rootScope = compiler.run();
+  t.snapshot(JSON.stringify(rootScope, null, 2));
+});
