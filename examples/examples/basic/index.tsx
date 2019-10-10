@@ -18,10 +18,10 @@ const styles = css({
 function render(inverse = false) {
   console.log("rendering");
   const root = document.getElementById("root");
-  const className = styles({ inverse });
+  const className = styles.scope({ inverse });
   root.innerHTML = `
     <div class="${className}">
-      <p class="${styles.something}">Hello Sam</p>
+      <p class="${styles.something()}">Hello Sam</p>
       <button id="update">Toggle Inverse</button>
     </div>
   `;
@@ -31,8 +31,8 @@ let inverse = true;
 document.addEventListener("click", e => {
   if (e.target.id === "update") {
     inverse = !inverse;
-    const className = styles({ inverse });
-    document.querySelector("." + styles.scope).className = className;
+    const className = styles.scope({ inverse });
+    document.querySelector("." + styles.scope()).className = className;
   }
 });
 

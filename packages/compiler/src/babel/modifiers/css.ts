@@ -70,18 +70,37 @@ function buildObjectFromAST(node: t.ObjectExpression) {
   return styles;
 }
 
+// let brickssStyleFn = template(`
+//   var someName = (function %%name%%(state) {
+//     if (state === void 0) { state = {}; }
+//     %%runtime%%._i(%%scope%%, %%styles%%);
+//     %%selectorToClassMap%%
+
+//     %%name%%.state = {};
+//     %%modifierToClassMap%%
+//     return %%runtime%%._os(
+//       %%modifiersStateChecks%%
+//     );
+//   })()
+// `);
+
 let brickssStyleFn = template(`
-  var someName = function %%name%%(state) {
-    if (state === void 0) { state = {}; }
-    %%runtime%%._i(%%scope%%, %%styles%%);
+  var someName = (function(){
+    var %%name%% = {};
     %%selectorToClassMap%%
+    %%name%%.scope = function (state) {
+      if (state === void 0) { state = {}; }
+      %%runtime%%._i(%%scope%%, %%styles%%);
+      return %%runtime%%._os(
+        %%modifiersStateChecks%%
+      );
+    }
 
     %%name%%.state = {};
     %%modifierToClassMap%%
-    return %%runtime%%._os(
-      %%modifiersStateChecks%%
-    );
-  }
+
+    return %%name%%;
+  })()
 `);
 
 function createBrickssStyleFunction(
@@ -99,7 +118,7 @@ function createBrickssStyleFunction(
           t.assignmentExpression(
             "=",
             t.memberExpression(fnName, t.identifier(name)),
-            t.stringLiteral(value)
+            t.arrowFunctionExpression([], t.stringLiteral(value))
           )
         )
     ),
@@ -112,7 +131,7 @@ function createBrickssStyleFunction(
               t.memberExpression(fnName, t.identifier("state")),
               t.identifier(name)
             ),
-            t.stringLiteral(value)
+            t.arrowFunctionExpression([], t.stringLiteral(value))
           )
         )
     ),

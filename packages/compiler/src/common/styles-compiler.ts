@@ -29,10 +29,8 @@ export class StylesCompiler {
     };
 
     this.root.styles.push(rootStyle);
-    this.root.selectorsToClass.scope = this.root.name;
     this.compileNested(this.rawStyle, this.root.styles, rootStyle);
 
-    // console.log(JSON.stringify(this.root, null, 2));
     return this.root;
   }
 

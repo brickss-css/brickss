@@ -38,23 +38,20 @@ let cardStyles = css({
   ".header": {
     color: "#fff",
     padding: "1em",
+
     "::before, ::after": {
       content: "",
       display: "table"
     },
+
     "::after": {
       clear: "both"
-    }
-    // TODO: support nesting like that
-    // ".date": {
-    //   float: "left",
-    //   fontSize: "12px"
-    // }
-  },
+    },
 
-  ".date": {
-    float: "left",
-    fontSize: "12px"
+    ".date": {
+      float: "left",
+      fontSize: "12px"
+    }
   },
 
   ".data": {
@@ -69,7 +66,6 @@ let cardStyles = css({
   ".content": {
     padding: "1em",
     position: "relative",
-    // TODO: support numbers
     zIndex: 1
   },
 
@@ -118,19 +114,19 @@ let cardStyles = css({
 });
 
 function DateCmp(props) {
-  return <div className={cardStyles.date}>{props.children}</div>;
+  return <div className={cardStyles.date()}>{props.children}</div>;
 }
 
 function Button(props) {
   return (
-    <a href="#" className={cardStyles.button}>
+    <a href="#" className={cardStyles.button()}>
       {props.children}
     </a>
   );
 }
 
 function Title(props) {
-  return <h1 className={cardStyles.title}>{props.children}</h1>;
+  return <h1 className={cardStyles.title()}>{props.children}</h1>;
 }
 
 function Link({ href, children }) {
@@ -138,25 +134,23 @@ function Link({ href, children }) {
 }
 
 function App() {
-  let classNames = appStyles({});
-  let cardClassNames = cardStyles({});
   return (
-    <div className={classNames}>
-      <div className={appStyles.row}>
-        <div className={cardClassNames}>
-          <div className={cardStyles.wrapper}>
-            <div className={cardStyles.header}>
+    <div className={appStyles.scope()}>
+      <div className={appStyles.row()}>
+        <div className={cardStyles.scope()}>
+          <div className={cardStyles.wrapper()}>
+            <div className={cardStyles.header()}>
               <DateCmp>12 Aug 2016</DateCmp>
             </div>
-            <div className={cardStyles.data}>
-              <div className={cardStyles.content}>
-                <span className={cardStyles.author}>Jane Doe</span>
+            <div className={cardStyles.data()}>
+              <div className={cardStyles.content()}>
+                <span className={cardStyles.author()}>Jane Doe</span>
                 <Title>
                   <Link href="#">
                     Stranger Things: The sound of the Upside Down
                   </Link>
                 </Title>
-                <p className={cardStyles.text}>
+                <p className={cardStyles.text()}>
                   The antsy bingers of Netflix will eagerly anticipate the
                   digital release of the Survive soundtrack, out today.
                 </p>

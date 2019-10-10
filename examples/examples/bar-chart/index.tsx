@@ -38,18 +38,18 @@ let barChartStyles = css({
 });
 
 function App() {
-  let className = barChartStyles();
+  let className = barChartStyles.scope();
   return (
     <div className={className}>
       {colors.map((color, idx) => {
         var height = (idx / colors.length) * 140 + 60;
         return (
-          <div className={barChartStyles.barWrapper}>
-            <div className={barChartStyles.barTitle} style={{ color }}>
+          <div className={barChartStyles.barWrapper()}>
+            <div className={barChartStyles.barTitle()} style={{ color }}>
               {height}
             </div>
             <div
-              className={barChartStyles.bar}
+              className={barChartStyles.bar()}
               style={{
                 backgroundColor: color,
                 height
