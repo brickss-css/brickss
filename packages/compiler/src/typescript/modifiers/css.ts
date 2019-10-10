@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 import { createBricksStyleFunction } from "../builders/bricks-style-fn";
 import { buildObjectFromAST } from "../helpers/ast-to-object";
-import { randomId, getScopeNameFromFilePath } from "../../common/hash";
+import { getScopeNameFromFilePath } from "../../common/hash";
 import { StylesCompiler } from "../../common/styles-compiler";
 
 export function css(node: ts.CallExpression) {

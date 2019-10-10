@@ -1,5 +1,3 @@
-import { blockStatement } from "@babel/types";
-
 export function safeProp<T>(obj: any, pathString: string, defaultValue: T): T {
   let value = obj;
 

@@ -187,7 +187,7 @@ export class StylesCompiler {
           : compiledModifiers + scopedSelector;
       } else if (scopedSelector) {
         compiledSelector = compiledModifiers + " " + scopedSelector;
-      } else if (isModifier && !scopedSelector && parent.scope) {
+      } else if (isModifier && parent.scope) {
         compiledSelector = compiledModifiers + " " + parent.scope;
       } else {
         compiledSelector = compiledModifiers;
