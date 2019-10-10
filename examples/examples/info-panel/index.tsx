@@ -84,50 +84,52 @@ let badgeStyles = css({
 
 function App() {
   return (
-    <div className={panelStyles()}>
-      <div className={panelStyles.table}>
+    <div className={panelStyles.scope()}>
+      <div className={panelStyles.table()}>
         <table>
           <tr>
             <td>
-              <span className={panelStyles.mute}>Scope:</span>
+              <span className={panelStyles.mute()}>Scope:</span>
             </td>
-            <td className={panelStyles.badgeCol}>
-              <span className={badgeStyles()}>fn</span>
+            <td className={panelStyles.badgeCol()}>
+              <span className={badgeStyles.scope()}>fn</span>
             </td>
             <td>z-entity-gallery__thumbs</td>
           </tr>
           <tr>
             <td />
-            <td className={panelStyles.badgeCol}>
-              <span className={badgeStyles({ color: "purple" })}>bem</span>
+            <td className={panelStyles.badgeCol()}>
+              <span className={badgeStyles.scope({ color: "purple" })}>
+                bem
+              </span>
             </td>
             <td>
-              <span className={panelStyles.mute}>block:</span>
+              <span className={panelStyles.mute()}>block:</span>
               z-entity-gallery
-              <span className={panelStyles.mute}> | elem:</span>
+              <span className={panelStyles.mute()}> | elem:</span>
               image
             </td>
           </tr>
           <tr>
-            <td colspan="4" className={panelStyles.tableSep} />
+            <td colspan="4" className={panelStyles.tableSep()} />
           </tr>
           <tr>
             <td>
-              <span className={panelStyles.mute}>Parent:</span>
+              <span className={panelStyles.mute()}>Parent:</span>
             </td>
-            <td className={panelStyles.badgeCol}>
-              <span className={badgeStyles({ color: "blue" })}>P</span>
+            <td className={panelStyles.badgeCol()}>
+              <span className={badgeStyles.scope({ color: "blue" })}>P</span>
             </td>
             <td>z-entity-gallery</td>
           </tr>
           <tr>
-            <td colspan="4" className={panelStyles.tableSep} />
+            <td colspan="4" className={panelStyles.tableSep()} />
           </tr>
           <tr>
             <td>
-              <span className={panelStyles.mute}>File:</span>
+              <span className={panelStyles.mute()}>File:</span>
             </td>
-            <td colspan="2" className={panelStyles.files}>
+            <td colspan="2" className={panelStyles.files()}>
               contribs/z-entity-search/blocks-deskpad/z-entity-gallery/__thumbs/z-entity-gallery__thumbs.priv.js:22
             </td>
           </tr>

@@ -110,7 +110,6 @@ function App() {
     2
   );
   const [bind, { width }] = useMeasure();
-  const className = appStyles();
 
   let heights = new Array(columns).fill(0);
   const displayItems = data.map((child, i) => {
@@ -125,7 +124,7 @@ function App() {
   return (
     <div
       ref={bind.ref}
-      class={className}
+      class={appStyles.scope()}
       style={{ height: Math.max(...heights) }}
     >
       {displayItems.map(({ css, xy, width, height }) => (

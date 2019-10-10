@@ -4,8 +4,8 @@ export interface CSS {
 
 export function css(_style: CSS) {
   return (undefined as any) as {
-    (state?: Record<string, boolean | string>): string;
-    [key: string]: string;
+    scope: (state?: Record<string, boolean | string>) => string;
+    [key: string]: () => string;
   };
 }
 

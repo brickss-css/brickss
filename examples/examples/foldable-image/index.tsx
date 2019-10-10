@@ -7,13 +7,13 @@ const FoldableImage = ({ width, height, alt, percentage, src }) => {
 
   return (
     <div
-      className={foldableImageStyles({ folded: percentage > 50 })}
+      className={foldableImageStyles.scope({ folded: percentage > 50 })}
       style={{
         transform: `translateY(${percentage / 4}%)`
       }}
     >
       <div
-        className={foldableImageStyles.topHalf}
+        className={foldableImageStyles.topHalf()}
         style={{
           width,
           height: height / 2
@@ -29,7 +29,7 @@ const FoldableImage = ({ width, height, alt, percentage, src }) => {
         />
       </div>
       <div
-        className={foldableImageStyles.bottomHalf}
+        className={foldableImageStyles.bottomHalf()}
         style={{
           width,
           height: height / 2,
@@ -39,12 +39,12 @@ const FoldableImage = ({ width, height, alt, percentage, src }) => {
         }}
       >
         <div
-          className={foldableImageStyles.shadow}
+          className={foldableImageStyles.shadow()}
           style={{
             opacity: percentage * 0.015
           }}
         />
-        <div className={foldableImageStyles.backside} />
+        <div className={foldableImageStyles.backside()} />
       </div>
 
       {/*
@@ -56,7 +56,7 @@ const FoldableImage = ({ width, height, alt, percentage, src }) => {
         this fix.
       */}
       <div
-        className={foldableImageStyles.flickerFixer}
+        className={foldableImageStyles.flickerFixer()}
         style={{
           top: height * 0.5,
           backgroundImage
@@ -136,7 +136,7 @@ const Demo = () => {
   const [state, setState] = React.useState(30);
   return (
     <>
-      <div className={containerStyles()} style={{ width: 460 }}>
+      <div className={containerStyles.scope()} style={{ width: 460 }}>
         <FoldableImage
           width={460}
           height={460}
