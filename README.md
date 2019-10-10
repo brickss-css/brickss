@@ -50,8 +50,6 @@ const myVar = "var(--my-font-size__hash)";
 //   "@media screen and (min-width: 900px)": {
 //      color: 'black'
 //   }
-// }, {
-//   [myVar]: `13px`
 // });
 
 const style = state => {
