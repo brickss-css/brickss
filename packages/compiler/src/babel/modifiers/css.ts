@@ -11,7 +11,7 @@ import { scopeVariable } from "../../common/scope-variable";
 import {
   PrintableValue,
   printStyles,
-  PrintableValueCSSVar
+  PrintableValueIdentifier
 } from "../../common/print-styles";
 import { TransformationContext } from "../transformation-context";
 import { CompilationError } from "../../common/errors";
@@ -70,20 +70,6 @@ function buildObjectFromAST(node: t.ObjectExpression) {
   return styles;
 }
 
-// let brickssStyleFn = template(`
-//   var someName = (function %%name%%(state) {
-//     if (state === void 0) { state = {}; }
-//     %%runtime%%._i(%%scope%%, %%styles%%);
-//     %%selectorToClassMap%%
-
-//     %%name%%.state = {};
-//     %%modifierToClassMap%%
-//     return %%runtime%%._os(
-//       %%modifiersStateChecks%%
-//     );
-//   })()
-// `);
-
 let brickssStyleFn = template(`
   var someName = (function(){
     var %%name%% = {};
@@ -136,7 +122,7 @@ function createBrickssStyleFunction(
         )
     ),
     scope: t.stringLiteral(stylesScope.name),
-    styles: buildStringFromStyles(styles),
+    styles: buildStringFromStyles(tctx, styles),
     modifiersStateChecks: t.objectExpression(
       Object.entries(stylesScope.modifiers)
         .reduce<Array<t.ObjectProperty>>((acc, [name, values]) => {
@@ -177,25 +163,44 @@ function createBrickssStyleFunction(
   }) as any).declarations[0].init; // :sad_marijn:
 }
 
-export function buildStringFromStyles(styles: Array<PrintableValue>) {
+export function buildStringFromStyles(
+  tctx: TransformationContext,
+  styles: Array<PrintableValue>
+) {
   if (styles.length < 2) {
     return t.stringLiteral(styles.map((style: any) => style.value).join(","));
   }
 
-  return createBinaryRecursive(([] as Array<PrintableValue>).concat(styles));
+  return createBinaryRecursive(
+    tctx,
+    ([] as Array<PrintableValue>).concat(styles)
+  );
 }
 
-let cssVarWithDefault = template(`
-(%%varName%%.defaultValue ? %%propName%% + %%varName%%.defaultValue + ";" : "") + "font-size: " + "var(--" + %%varName%%.name + ", " + (%%varName%%.defaultValue || "") + ");"
-`);
-export function createCssVarWithDefault(cssVar: PrintableValueCSSVar) {
-  return (cssVarWithDefault({
-    varName: t.identifier(cssVar.value.identifier),
-    propName: t.stringLiteral(cssVar.value.name + ": ")
-  }) as any).expression;
+/**
+ * Runtime evaluated property with dynamic variable as its value.
+ *
+ *              {value.name}  {value.identifier}
+ * runtime._id('font-size',   val);
+ */
+export function createWrappedIdentifier(
+  tctx: TransformationContext,
+  identifier: PrintableValueIdentifier
+) {
+  return t.callExpression(
+    t.memberExpression(
+      t.identifier(tctx.runtimeIdentifier),
+      t.identifier("_id")
+    ),
+    [
+      t.stringLiteral(identifier.value.name),
+      t.identifier(identifier.value.identifier)
+    ]
+  );
 }
 
 export function createBinaryRecursive(
+  tctx: TransformationContext,
   styles: Array<PrintableValue>
 ): t.BinaryExpression | t.StringLiteral {
   let left = styles.shift();
@@ -203,13 +208,13 @@ export function createBinaryRecursive(
     return t.binaryExpression(
       "+",
       t.stringLiteral(left.value),
-      createBinaryRecursive(styles)
+      createBinaryRecursive(tctx, styles)
     );
-  } else if (left && left.type === "cssVar") {
+  } else if (left && left.type === "identifier") {
     return t.binaryExpression(
       "+",
-      createCssVarWithDefault(left),
-      createBinaryRecursive(styles)
+      createWrappedIdentifier(tctx, left),
+      createBinaryRecursive(tctx, styles)
     );
   }
   return t.stringLiteral("");
