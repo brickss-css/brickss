@@ -85,7 +85,7 @@ let stringfy = (styles: Array<PrintableValue>) =>
       if (style.type === "static") {
         return style.value;
       }
-      return `${style.value.name}: "{${style.value.identifier}}";`;
+      return `${style.value.name}: "{${style.value.value}}";`;
     })
     .join("");
 
