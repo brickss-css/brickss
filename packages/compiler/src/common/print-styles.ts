@@ -5,13 +5,13 @@ import {
   isStyleDeclaration
 } from "./styles-compiler";
 
-export type PrintableValueCSSVar = {
-  type: "cssVar";
+export type PrintableValueIdentifier = {
+  type: "identifier";
   value: { name: string; identifier: string };
 };
 export type PrintableValue =
   | { type: "static"; value: string }
-  | PrintableValueCSSVar;
+  | PrintableValueIdentifier;
 
 export function printStyles(scope: RootScope) {
   let styles = scope.styles
@@ -71,7 +71,7 @@ export function printStyleDeclaration(
   styleDeclaration.properties.forEach(({ name, value }) => {
     if (value.type === "identifier") {
       style.push({
-        type: "cssVar",
+        type: "identifier",
         value: { name, identifier: value.value }
       });
     } else {

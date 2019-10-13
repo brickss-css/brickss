@@ -19,3 +19,9 @@ exports._os = function(state) {
   }
   return cls;
 };
+
+exports._id = function(n, v) {
+  return v && v.name && v.defaultValue
+    ? n + ":" + v.defaultValue + ";" + n + ":var(--" + v.name + ");"
+    : n + ":" + v + ";";
+};

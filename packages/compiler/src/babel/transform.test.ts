@@ -13,6 +13,7 @@ import { css as cs, cssVar } from "@brickss/compiler";
 const randomHeight = () => Math.random();
 const myVar = cssVar("my-font-size", "13px");
 const dynamicValueCssVar = cssVar("height", \`$\{randomHeight() * 100}px\`);
+const justAVar = "red";
 
 export const exportedCssVar = cssVar("my-font-size-2", "15px");
 
@@ -22,7 +23,7 @@ const styles = cs({
   lineHeight: exportedCssVar,
   height: dynamicValueCssVar,
   ".something": {
-    color: "red",
+    color: justAVar,
     padding: "10px"
   },
   ".something[state|inverse]": {

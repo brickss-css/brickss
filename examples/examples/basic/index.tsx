@@ -1,13 +1,14 @@
 import { css, cssVar } from "@brickss/compiler";
 const myVar = cssVar("my-font-size", "13px");
 const myVar2 = cssVar("my-font-size-2", "15px");
+const redColor = "red";
 
 const styles = css({
   background: "green",
   fontSize: myVar,
   lineHeight: myVar2,
   ".something": {
-    color: "red",
+    color: redColor,
     padding: "10px"
   },
   ".something[state|inverse]": {
