@@ -11,7 +11,8 @@ import { scopeVariable } from "../../common/scope-variable";
 import {
   PrintableValue,
   printStyles,
-  PrintableValueIdentifier
+  PrintableValueIdentifier,
+  PrintableValueComplex
 } from "../../common/print-styles";
 import { TransformationContext } from "../transformation-context";
 import { CompilationError } from "../../common/errors";
@@ -39,8 +40,8 @@ export function css(tctx: TransformationContext, path: any) {
   let stylesObject = buildObjectFromAST(node
     .arguments[0] as t.ObjectExpression);
 
-  let compiler = new StylesCompiler(scopeName, stylesObject);
-  let stylesScope = compiler.run();
+  let stylesCompiler = new StylesCompiler(scopeName, stylesObject);
+  let stylesScope = stylesCompiler.run();
 
   path.replaceWith(createBrickssStyleFunction(tctx, stylesScope));
 }
@@ -56,7 +57,19 @@ function buildObjectFromAST(node: t.ObjectExpression) {
       styles[name] = buildObjectFromAST(value);
     } else if (t.isIdentifier(value)) {
       // TODO: inline not exported identifiers
-      styles[name] = { type: "identifier", value: value.name };
+      styles[name] = {
+        type: "identifier",
+        value: value.name
+      };
+    } else if (
+      t.isMemberExpression(value) ||
+      t.isTemplateLiteral(value) ||
+      t.isBinaryExpression(value)
+    ) {
+      styles[name] = {
+        type: "complex",
+        value: value
+      };
     } else if (t.isStringLiteral(value)) {
       styles[name] = { type: "string", value: value.value };
     } else if (t.isNumericLiteral(value)) {
@@ -185,7 +198,7 @@ export function buildStringFromStyles(
  */
 export function createWrappedIdentifier(
   tctx: TransformationContext,
-  identifier: PrintableValueIdentifier
+  propertyValue: PrintableValueIdentifier | PrintableValueComplex
 ) {
   return t.callExpression(
     t.memberExpression(
@@ -193,8 +206,10 @@ export function createWrappedIdentifier(
       t.identifier("_id")
     ),
     [
-      t.stringLiteral(identifier.value.name),
-      t.identifier(identifier.value.identifier)
+      t.stringLiteral(propertyValue.value.name),
+      propertyValue.type === "complex"
+        ? propertyValue.value.value
+        : t.identifier(propertyValue.value.value)
     ]
   );
 }
@@ -210,12 +225,13 @@ export function createBinaryRecursive(
       t.stringLiteral(left.value),
       createBinaryRecursive(tctx, styles)
     );
-  } else if (left && left.type === "identifier") {
+  } else if (left && (left.type === "identifier" || left.type === "complex")) {
     return t.binaryExpression(
       "+",
       createWrappedIdentifier(tctx, left),
       createBinaryRecursive(tctx, styles)
     );
   }
+
   return t.stringLiteral("");
 }

@@ -7,10 +7,15 @@ import {
 
 export type PrintableValueIdentifier = {
   type: "identifier";
-  value: { name: string; identifier: string };
+  value: { name: string; value: string };
+};
+export type PrintableValueComplex = {
+  type: "complex";
+  value: { name: string; value: any };
 };
 export type PrintableValue =
   | { type: "static"; value: string }
+  | PrintableValueComplex
   | PrintableValueIdentifier;
 
 export function printStyles(scope: RootScope) {
@@ -72,7 +77,12 @@ export function printStyleDeclaration(
     if (value.type === "identifier") {
       style.push({
         type: "identifier",
-        value: { name, identifier: value.value }
+        value: { name, value: value.value }
+      });
+    } else if (value.type === "complex") {
+      style.push({
+        type: "complex",
+        value: { name, value: value.value }
       });
     } else {
       style.push({ type: "static", value: name + ": " + value.value + ";" });

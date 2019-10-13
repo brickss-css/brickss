@@ -14,6 +14,7 @@ const randomHeight = () => Math.random();
 const myVar = cssVar("my-font-size", "13px");
 const dynamicValueCssVar = cssVar("height", \`$\{randomHeight() * 100}px\`);
 const justAVar = "red";
+const colors = { black: '#000' };
 
 export const exportedCssVar = cssVar("my-font-size-2", "15px");
 
@@ -35,7 +36,7 @@ const styles = cs({
   },
   "[state|inverse]": {
     ".icon": {
-      color: "#000"
+      color: colors.black
     }
   },
   "[state|size=small]": {
