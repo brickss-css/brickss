@@ -1,7 +1,7 @@
 exports._i = function(id, c) {
   var bid = "bss_" + id,
     d = document;
-  if (d.getElementById(bid)) return;
+  if (window[bid]) return;
   var s = d.createElement("style");
   s.setAttribute("id", bid);
   s.appendChild(d.createTextNode(c));
@@ -21,7 +21,7 @@ exports._os = function(state) {
 };
 
 exports._id = function(n, v) {
-  return v && v.name && v.defaultValue
-    ? n + ":" + v.defaultValue + ";" + n + ":var(--" + v.name + ");"
+  return v && v.name && v._c_
+    ? n + ":" + v + ";" + n + ":var(--" + v.name + "," + v + ");"
     : n + ":" + v + ";";
 };

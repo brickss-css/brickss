@@ -1,8 +1,6 @@
 import test from "ava";
 import { _i as injectCss, _os as objStr } from "./index";
 
-const window = global;
-
 // @ts-ignore
 setup();
 
@@ -17,7 +15,7 @@ test("injectCss: injects basic style tag", t => {
 `
   );
 
-  t.deepEqual(window.doc, [
+  t.deepEqual(global.window.doc, [
     [
       { id: "bss_file__hash" },
       `
@@ -43,7 +41,7 @@ test("injectCss: injects only one style tag for the same block", t => {
     );
   }
 
-  t.deepEqual(window.doc, [
+  t.deepEqual(global.window.doc, [
     [
       { id: "bss_file__hash" },
       `

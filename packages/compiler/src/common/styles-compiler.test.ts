@@ -187,3 +187,19 @@ test("Compiler: should compile nested state selector", t => {
   let rootScope = compiler.run();
   t.snapshot(JSON.stringify(rootScope, null, 2));
 });
+
+test("Compiler: should compile complex selectors with psuedo", t => {
+  let compiler = new StylesCompiler("test-hash", {
+    "input:not(:placeholder-shown)": {
+      color: { type: "string", value: "green" },
+
+      "[state|foo]": {
+        color: { type: "string", value: "red" }
+      }
+    }
+  } as const);
+  let rootScope = compiler.run();
+  t.pass();
+  // console.log(JSON.stringify(rootScope, null, 2));
+  t.snapshot(JSON.stringify(rootScope, null, 2));
+});

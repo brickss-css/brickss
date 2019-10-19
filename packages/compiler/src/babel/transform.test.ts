@@ -71,10 +71,7 @@ render(inverse);
 `;
 
 test("Babel: test transform", t => {
-  t.notThrows(() => {
-    let transformed = babel.transform(source, options).code;
-    console.log(transformed);
-  });
+  t.notThrows(() => babel.transform(source, options).code);
 });
 
 test("Babel: should throw [BSS1001] when an argument of 'css' function is not an ObjectExpression", t => {
