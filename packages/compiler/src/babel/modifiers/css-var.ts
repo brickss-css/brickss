@@ -20,9 +20,12 @@ export function cssVar(tctx: TransformationContext, path: any) {
         t.identifier("name"),
         t.stringLiteral(`${name}__${hash(varName + tctx.fileName)}`)
       ),
-      t.objectProperty(
-        t.identifier("defaultValue"),
-        (defaultValue as any) || t.identifier("undefined")
+      t.objectProperty(t.identifier("_c_"), t.numericLiteral(1)),
+      t.objectMethod(
+        "method",
+        t.identifier("toString"),
+        [],
+        t.blockStatement([t.returnStatement(defaultValue as any)])
       )
     ])
   );

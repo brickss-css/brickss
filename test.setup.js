@@ -9,6 +9,10 @@ class HTMLElement {
 
   setAttribute(key, value) {
     this._attributes[key] = value;
+
+    if (key === "id") {
+      global.window[value] = true;
+    }
   }
 
   appendChild(child) {
@@ -32,18 +36,15 @@ class TextNode {
 
 global.setup = () => {
   afterEach(() => {
-    global.doc = undefined;
+    global.window = undefined;
     global.document = undefined;
   });
 
   beforeEach(() => {
-    global.doc = [];
+    global.window = {
+      doc: []
+    };
     global.document = {
-      getElementById: id => {
-        return global.doc.find(([attrs]) => {
-          return attrs.id === id;
-        });
-      },
       createElement: () => {
         return new HTMLElement();
       },
@@ -52,7 +53,7 @@ global.setup = () => {
       },
       head: {
         appendChild: child => {
-          global.doc.push(child.__getValue());
+          global.window.doc.push(child.__getValue());
         }
       }
     };

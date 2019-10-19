@@ -6,9 +6,11 @@
   "scripts": {
     "test": "ava",
     "build": "tsc -b ./",
+    "prebuild:example": "npm run build",
     "build:example": "yarn workspace @brickss/examples build",
     "lint:staged": "lint-staged",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "sizelimit": "node ./scripts/filesize.js packages/runtime/index.js"
   },
   "workspaces": [
     "packages/*",

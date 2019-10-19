@@ -11,7 +11,7 @@ export function css(_style: CSS) {
 
 export function cssVar(
   _name: string,
-  _defaultValue: string
+  _defaultValue: string | number
 ): { name: string; defaultValue: string } {
   return (undefined as any) as { name: string; defaultValue: string };
 }

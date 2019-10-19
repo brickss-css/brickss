@@ -12,7 +12,7 @@ export function isModifier(str: string): boolean {
 }
 
 export function isPsuedoSelector(str: string): boolean {
-  return str.includes(":");
+  return str.startsWith(":");
 }
 
 export function isAtRule(str: string): boolean {
